@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -16,6 +17,32 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
+/***********************************************************************************************
+ * 
+ * 
+Tuning Methods
+
+Zeigler-Nichols tuning method works by increasing P until the system starts oscillating, 
+and then using the period of the oscillation to calculate I and D.
+
+    Start by setting I and D to 0.
+	Increase P until the system starts oscillating for a period of Tu. You want the oscillation
+	 to be large enough that you can time it. This maximum P will be referred to as Ku.
+    Use the chart below to calculate different P, I, and D values.
+
+Control Types 	P 	I 	D
+P 	.5*Ku 	- 	-
+PI 	.45*Ku 	.54*Ku/Tu 	-
+PID 	.6*Ku 	1.2*Ku/Tu 	3*Ku*Tu/40
+
+Note
+
+The period of oscillation is one full ‘stroke’, there and back. 
+Imagine a grandfather clock with a pendulum, when it is all the way to the right, swings to the left, 
+and hits the right again, that is 1 period.
+
+ * 
+ ***********************************************************************************************/
 public class Wheels {
 	// Led lights.
 	private LedLights ledLights;
@@ -56,7 +83,8 @@ public class Wheels {
 	private AHRS ahrs;
 	private PIDController turnController;
 
-	static final double kToleranceDegrees = 1.0f;
+	//static final double kToleranceDegrees = 1.0f;
+	static final double kToleranceDegrees = 2.0f;
 	static final double kLimeLightToleranceDegrees = 1.0f;
 
 	//
@@ -67,6 +95,7 @@ public class Wheels {
 	//Limelight Variables
 	private boolean limeLightFirstTime = true;
 	private static final int ON_TARGET_COUNT = 20;
+	private static final int ON_ANGLE_COUNT = 10;
 
 	//Limelight
 	private double m_LimelightCalculatedDistPrev = 0;
@@ -77,7 +106,8 @@ public class Wheels {
 	private long timeOut;
 
 	// Turn Controller
-	private static final double kP = 0.05;
+	//private static final double kP = 0.05;
+	private static final double kP = 0.02;
 	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 
@@ -186,7 +216,7 @@ public class Wheels {
 
 		/* Max/Min output values */
 		//Turn Controller
-		turnController.setIntegratorRange(-.35, .35); // do not change 
+		turnController.setIntegratorRange(-.25, .25); // do not change 
 		turnController.setTolerance(kToleranceDegrees);
 
 		//Target Controller
@@ -276,30 +306,38 @@ public class Wheels {
 	 * Autonomous Rotate
 	 */
 	public int rotate(double degrees){
+		double pidOutput;
 		long currentMs = System.currentTimeMillis();
 
 		if (firstTime == true) {
 			count = 0;
 			firstTime = false;
-			timeOut = currentMs + 2000;       // two second time out
+			timeOut = currentMs + 2500;       // two second time out
 			turnController.setSetpoint(degrees);
 		}
 		
 		if (currentMs > timeOut) {
 			count = 0;
 			firstTime = true;
+			System.out.println("Timed out");
 			return Robot.FAIL;
 		}
 
 		// Rotate
-		drive.arcadeDrive( 0.0, turnController.calculate(ahrs.getYaw(), degrees) * -1 );
+		pidOutput = turnController.calculate(ahrs.getYaw(), degrees);
+		pidOutput = MathUtil.clamp(pidOutput, -0.75, 0.75);
+		System.out.println("Yaw: " + ahrs.getYaw());
+		System.out.println(pidOutput);
+		drive.arcadeDrive( 0.0, pidOutput * -1, false);
 
 		turnController.setTolerance(kToleranceDegrees);
 		// CHECK: Routine Complete
 		if (turnController.atSetpoint() == true) {
 			count = count + 1;
+			System.out.println("Count: " + count);
 
-			if (count == ON_TARGET_COUNT) {
+			if (count == ON_ANGLE_COUNT) {
+				System.out.println("DONE");
 				turnController.reset();
 				count = 0;
 				firstTime = true;
@@ -528,13 +566,38 @@ public class Wheels {
 		System.out.println("encoder: " +  encoderLeft_1.getPosition() );
 	}
 
+	//0 degrees is straight forward
+	//+- 180 is backwards
+	//+ is to right (0 to +180)
+	//- is to left (0 to -180)
 	public void testYaw()  {
 		System.out.println("Yaw " + ahrs.getYaw());
 	}
 
+	//Error = setPoint - yaw
 	public void testPid(){
-		turnController.setSetpoint(0);
+		turnController.setSetpoint(45);
 		System.out.println(turnController.calculate(ahrs.getYaw()));
 	}
 
+	/* Is the PID error positive or negative? */
+	public void testPidError()  {
+		System.out.println("output:" + turnController.calculate(40, 50));
+	}
+
+	public void testArcadeRotation(){
+		drive.arcadeDrive( 0.0, 0.25, false);
+	}
+
+	public void testRotation(double degrees){
+		double pidOutput;
+
+		turnController.setP(0.02);
+		turnController.setI(0.0);
+		turnController.setD(0.0);
+		pidOutput = turnController.calculate(ahrs.getYaw(), degrees);
+		pidOutput = MathUtil.clamp(pidOutput, -0.75, 0.75);
+		System.out.println("Yaw: " + ahrs.getYaw() + " Pid Output: " + pidOutput);
+		drive.arcadeDrive( 0.0, pidOutput * -1, false);
+	}
 } //End of the Wheels Class 

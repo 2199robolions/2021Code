@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
 	private int     colorWheelSpin  = 0;
 	private int     delaySeconds    = 0;
 	private int     autoStatus      = Robot.CONT; 
+	private long    startTime       = 0;
+	private long    endTime         = 0;
 	private boolean climbEnabled = false;
 	private boolean climberRetract  = false;
 	private boolean enableTopPiston = false;
@@ -179,7 +181,8 @@ public class Robot extends TimedRobot {
 		m_positionSelected  = m_chooser.getSelected();
 		m_delaySelected     = m_delayChooser.getSelected();
 		delaySeconds        = Integer.parseInt(m_delaySelected);
-		autoStatus          = Robot.CONT;      
+		autoStatus          = Robot.CONT;  
+		startTime           = System.nanoTime();    
 	}
 
 	/**
@@ -187,6 +190,18 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+
+		if (autoStatus == Robot.CONT) {
+			autoStatus = auto.autoNav();
+		}
+	}
+
+
+	/**
+	 * This function is called periodically during autonomous.
+	 */
+//	@Override
+	public void CompetitionautonomousPeriodic() {
 
 		if (autoStatus == Robot.CONT) {
 			switch (m_positionSelected) {
@@ -242,6 +257,9 @@ public class Robot extends TimedRobot {
 
 	public void testInit()  {
 		// Placeholder
+		System.out.println("Start test mode...");
+		System.out.println("record time...");
+		autoStatus = Robot.CONT;
 	}
 
 	/**
@@ -254,10 +272,19 @@ public class Robot extends TimedRobot {
 		//System.out.println(wheels.getCameraMountingAngle(12));
 		//System.out.println("Wheels Rotate " + stat);
 
-		shooter.autoShooterControl(Shooter.ShootLocation.OFF);
+		//shooter.autoShooterControl(Shooter.ShootLocation.OFF);
 		//auto.shooterTest();
 
 		//auto.testAll();
+		//wheels.testPidError();
+		//wheels.testYaw();
+		//wheels.testPid();
+		//wheels.testArcadeRotation();
+		if(autoStatus == Robot.CONT){
+			autoStatus = wheels.rotate(90);
+		}
+		//wheels.testRotation(-90);
+		
 	}
 
 
@@ -553,4 +580,22 @@ System.out.println("shooter NOT ready");
 	}
 
 
+
+
+	/*************************************************
+	 * 
+	 * This code get run when robot is disabled
+	 * Put code in here to record time when disabled
+	 * 
+	 *************************************************/
+	public void
+	disabledInit()
+	{
+		endTime = System.nanoTime();
+		System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));
+		System.out.println("Disabled robot...");
+		System.out.println("record time...");
+	}
+
 } //End of the Robot Class
+

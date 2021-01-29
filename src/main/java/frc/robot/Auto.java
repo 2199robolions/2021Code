@@ -37,7 +37,39 @@ public class Auto {
 		step = 1;
 	}
 
+
+	/*********************************************
+	 * 
+	 * Autonomous program for AtHome AutoNav
+	 * 
+	 */
+	public int autoNav()
+	{
+		int status = Robot.CONT;
 	
+		switch(step) {
+			case 1:
+				status = wheels.forward(8,0);
+				break;
+			case 2:
+				status = wheels.rotate(45);
+				break;
+			case 3:
+				status = wheels.forward(7,45);
+				break;
+			default:
+				return Robot.DONE;
+		}
+			
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+	
+
+
 	/**
 	 * left right or center of target simple shoot and move forward	
 	 */
