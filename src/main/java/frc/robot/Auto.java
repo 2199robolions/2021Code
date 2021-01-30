@@ -43,10 +43,15 @@ public class Auto {
 	 * Autonomous program for AtHome AutoNav
 	 * 
 	 */
-	public int autoNav()
-	{
+	public int autoNav() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
 		int status = Robot.CONT;
-	
+
 		switch(step) {
 			case 1:
 				status = wheels.forward(8,0);
@@ -58,6 +63,7 @@ public class Auto {
 				status = wheels.forward(7,45);
 				break;
 			default:
+				firstTime = true;
 				return Robot.DONE;
 		}
 			
@@ -67,7 +73,37 @@ public class Auto {
 
 		return Robot.CONT;
 	}
-	
+
+	/** 
+	 * For the 2021 AutoNav Challenge: Uses a different rotate function than the previous autoNav() function (see above), revolving around a point outside of the robot body.
+	*/
+	public int autoNavCircle() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forward(9, 0);
+				break;
+			case 2:
+				status = wheels.circle(-15.0, true, 0);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
 
 
 	/**
