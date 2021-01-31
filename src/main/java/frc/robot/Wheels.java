@@ -119,6 +119,9 @@ public class Wheels {
 	private static final double tD = 0.00;
 	private static final double tToleranceDegrees = 1.00f;
 
+	//Circle variables
+	public static int revolutions;  
+
 	// Super Shifter pnuematics
 	private DoubleSolenoid  superShifter;
 	private final int SOLENOID_LOW_GEAR_ID      = 3;
@@ -141,6 +144,14 @@ public class Wheels {
 		TEN_FOOT,
 		TRENCH;
 	}
+
+	//Possible states of the circleTest function
+	public static enum CircleRange {
+		IN_RANGE,
+		OUT_RANGE;
+	}
+
+	private CircleRange rangeState = CircleRange.OUT_RANGE;
 
 	/**
 	 * CONSTRUCTOR
@@ -312,7 +323,7 @@ public class Wheels {
 		if (firstTime == true) {
 			count = 0;
 			firstTime = false;
-			timeOut = currentMs + 2500;       // two second time out
+			timeOut = currentMs + 2500;       // two.5 second time out
 			turnController.setSetpoint(degrees);
 		}
 		
@@ -352,6 +363,92 @@ public class Wheels {
 			count = 0;
 			return Robot.CONT;
 		}
+	}
+
+
+
+	
+	public int circle(double exitAngle, boolean clockwise, int passes)   {
+		int range = 10;
+		double maxRange = exitAngle + range;
+		double minRange = exitAngle - range;
+		
+		//Stops the robot if it's turning for more than 5 seconds
+		long currentMs = System.currentTimeMillis();
+
+		if (firstTime == true) {
+			revolutions = passes;
+			timeOut = currentMs + 5000;
+			firstTime = false;
+		}
+		if(currentMs > timeOut){
+
+			drive.arcadeDrive( 0.0, 0.0 );
+			firstTime = true;
+			System.out.println("Timeout");
+			return Robot.DONE;
+		}
+
+
+		//Bringing range windows into usable domain
+		if(maxRange > 180)  {
+			maxRange -= 360;
+		} else if(maxRange < -180)  {
+			maxRange += 360;
+		} 
+
+		if(minRange > 180)  {
+			minRange -= 360;
+		} else if(minRange < -180)  {
+			minRange += 360;
+		}
+		//inputs of revolutions, exit angle, and the direction
+
+		//Get angle of the robot for the yaw
+		double yaw = ahrs.getYaw();
+		System.out.println("Yaw: " + yaw);
+		
+		//state machine that checks to see if a range around the exit angle is entered, and subtracts a revolution if yes
+		//if revolutions is at 0, stop the robot, otherwise keep going
+		if(clockwise == true){
+			drive.arcadeDrive(-0.6, -0.47, false);
+		} else if (clockwise == false){
+			drive.arcadeDrive(-0.6, 0.47, false);
+		}
+		
+		if(rangeState == CircleRange.IN_RANGE) {
+		
+				
+			if(revolutions == 0) {
+				//System.out.println("Final Yaw: " + yaw);
+				drive.arcadeDrive(0.0, 0.0);
+				firstTime = true;
+				System.out.println("Done");
+				return Robot.DONE;
+			}
+			
+			if(minRange <= yaw && yaw <= maxRange){
+				//do nothing
+				return Robot.CONT;
+			} else {
+				revolutions--;
+				rangeState = CircleRange.OUT_RANGE;
+				return Robot.CONT;
+			}
+			
+			
+
+		} else if(rangeState == CircleRange.OUT_RANGE) {
+				
+			if(minRange <= yaw && yaw <= maxRange) {
+				rangeState = CircleRange.IN_RANGE;
+			} 
+			return Robot.CONT;
+		}	
+
+		System.out.println("We shouldn't be here");
+		return Robot.DONE;
+
 	}
 
 	/**
@@ -599,5 +696,9 @@ public class Wheels {
 		pidOutput = MathUtil.clamp(pidOutput, -0.75, 0.75);
 		System.out.println("Yaw: " + ahrs.getYaw() + " Pid Output: " + pidOutput);
 		drive.arcadeDrive( 0.0, pidOutput * -1, false);
+	}
+
+	public void testCircleDrive(){
+		drive.arcadeDrive(-0.6, -0.45, false);
 	}
 } //End of the Wheels Class 

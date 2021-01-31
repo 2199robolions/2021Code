@@ -281,7 +281,7 @@ public class Robot extends TimedRobot {
 		//wheels.testPid();
 		//wheels.testArcadeRotation();
 		if(autoStatus == Robot.CONT){
-			autoStatus = wheels.rotate(90);
+			autoStatus = wheels.circle(-10, true, 1);
 		}
 		//wheels.testRotation(-90);
 		
