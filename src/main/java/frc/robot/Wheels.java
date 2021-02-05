@@ -337,8 +337,8 @@ public class Wheels {
 		// Rotate
 		pidOutput = turnController.calculate(ahrs.getYaw(), degrees);
 		pidOutput = MathUtil.clamp(pidOutput, -0.75, 0.75);
-		System.out.println("Yaw: " + ahrs.getYaw());
-		System.out.println(pidOutput);
+		//System.out.println("Yaw: " + ahrs.getYaw());
+		//System.out.println(pidOutput);
 		drive.arcadeDrive( 0.0, pidOutput * -1, false);
 
 		turnController.setTolerance(kToleranceDegrees);

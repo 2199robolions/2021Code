@@ -88,10 +88,25 @@ public class Auto {
 
 		switch(step) {
 			case 1:
-				status = wheels.forward(9, 0);
+				status = wheels.forward(9.5, 0);
 				break;
 			case 2:
-				status = wheels.circle(-15.0, true, 0);
+				status = wheels.circle(-5.0, true, 1);
+				break;
+			case 3:
+				status = wheels.forward(7, -10);
+				break;
+			case 4:
+				status = wheels.circle(45, false, 1);
+				break;
+			case 5:
+				status = wheels.forward(8, 48);
+				break;
+			case 6:
+				status = wheels.circle(-169, false, 1);
+				break;
+			case 7:
+				status = wheels.forward(21, 180);
 				break;
 			default:
 				firstTime = true;
@@ -100,6 +115,7 @@ public class Auto {
 
 		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
 			step = step + 1;
+			System.out.println("Entering step: " + step);
 		}
 
 		return Robot.CONT;

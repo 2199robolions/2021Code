@@ -192,7 +192,8 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 
 		if (autoStatus == Robot.CONT) {
-			autoStatus = auto.autoNav();
+			//Robot starts 1 foot from right edge of starting box
+			autoStatus = auto.autoNavCircle();
 		}
 	}
 
