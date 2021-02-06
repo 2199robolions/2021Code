@@ -94,19 +94,19 @@ public class Auto {
 				status = wheels.circle(-5.0, true, 1);
 				break;
 			case 3:
-				status = wheels.forward(7, -10);
+				status = wheels.forward(7, -12.5);
 				break;
 			case 4:
 				status = wheels.circle(45, false, 1);
 				break;
 			case 5:
-				status = wheels.forward(8, 48);
+				status = wheels.forward(7.5, 45);
 				break;
 			case 6:
 				status = wheels.circle(-169, false, 1);
 				break;
 			case 7:
-				status = wheels.forward(21, 180);
+				status = wheels.forward(21.0, 168.0, -1.0);
 				break;
 			default:
 				firstTime = true;

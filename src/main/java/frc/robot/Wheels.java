@@ -261,9 +261,14 @@ public class Wheels {
 	/*
 	 * Autonomous Forward
 	 */
-	public int forward(double feet, double heading) {
+	public int forward(double feet, double heading){
+		return forward(feet, heading, -0.6);
+	}
+
+
+	public int forward(double feet, double heading, double forwardPower) {
 		double encoderCurrent;
-		double forwardPower = -.6;          // Negative Push Robot Forward
+		//double forwardPower = -.6;          // Negative Push Robot Forward
 		double rotationsPerFoot;
 
 		// Determines Feet for the Specific Gear Ratio
