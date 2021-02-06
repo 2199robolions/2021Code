@@ -77,6 +77,62 @@ public class Auto {
 	/** 
 	 * For the 2021 AutoNav Challenge: Uses a different rotate function than the previous autoNav() function (see above), revolving around a point outside of the robot body.
 	*/
+	public int autoSlalom() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forward(7, 0);
+				break;
+			case 2:
+				status = wheels.circle(42, true, 0);
+				break;
+			case 3:
+				status = wheels.forward(10.75, 40, -0.7);
+				break;
+			case 4:
+				status = wheels.circle(97, true, 1);
+				break;
+			case 5:
+				status = wheels.forward(2.5, 87);
+				break;
+			case 6:
+				status = wheels.circle(169, false, 1);
+				break;
+			case 7:
+				status = wheels.forward(1.7, 135);
+				break;
+			case 8:
+				status = wheels.circle(-138, true, 1);
+				break;
+			case 9:
+				status = wheels.forward(10.5, -138, -0.8);
+				break;
+			case 10:
+				status = wheels.circle(-90, true, 1);
+				break;
+			case 11:
+				status = wheels.forward(3, -90);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
 	public int autoNavCircle() {
 
 		if (firstTime == true) {
