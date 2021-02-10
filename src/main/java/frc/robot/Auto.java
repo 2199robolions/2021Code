@@ -88,37 +88,43 @@ public class Auto {
 
 		switch(step) {
 			case 1:
-				status = wheels.forward(7, 0);
+				status = wheels.forward(1, 0);
 				break;
 			case 2:
-				status = wheels.circle(42, true, 0);
+				status = wheels.circle(-45, false, 0);
 				break;
 			case 3:
-				status = wheels.forward(10.75, 40, -0.7);
+				status = wheels.forward(4.5, -45);
 				break;
 			case 4:
-				status = wheels.circle(97, true, 1);
+				status = wheels.circle(7, true, 0);
 				break;
 			case 5:
-				status = wheels.forward(2.5, 87);
+				status = wheels.forward(12.25, 7, -0.7);
 				break;
 			case 6:
-				status = wheels.circle(169, false, 1);
+				status = wheels.circle(60, true, 1);
 				break;
 			case 7:
-				status = wheels.forward(1.7, 135);
+				status = wheels.forward(2, 52);
 				break;
 			case 8:
-				status = wheels.circle(-138, true, 1);
+				status = wheels.circle(115, false, 1);
 				break;
 			case 9:
-				status = wheels.forward(10.5, -138, -0.8);
+				status = wheels.forward(1.5, 115);
 				break;
 			case 10:
-				status = wheels.circle(-90, true, 1);
+				status = wheels.circle(-169.9, true, 1);
 				break;
 			case 11:
-				status = wheels.forward(3, -90);
+				status = wheels.forward(9.3, 169, -0.6);
+				break;
+			case 12:
+				status = wheels.circle(-135, true, 1);
+				break;
+			case 13:
+				status = wheels.forward(3.5, -135);
 				break;
 			default:
 				firstTime = true;
