@@ -133,6 +133,7 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	//Barrel Race
 	public int autoNavCircle() {
 
 		if (firstTime == true) {
@@ -156,13 +157,13 @@ public class Auto {
 				status = wheels.circle(45, false, 1);
 				break;
 			case 5:
-				status = wheels.forward(7.5, 45);
+				status = wheels.forward(7.25, 45);
 				break;
 			case 6:
 				status = wheels.circle(-169, false, 1);
 				break;
 			case 7:
-				status = wheels.forward(21.0, 168.0, -1.0);
+				status = wheels.forward(21.0, 169.9, -1.0);
 				break;
 			default:
 				firstTime = true;
