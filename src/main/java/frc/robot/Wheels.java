@@ -119,8 +119,10 @@ public class Wheels {
 	private static final double tD = 0.00;
 	private static final double tToleranceDegrees = 1.00f;
 
-	//Circle variables
+	//Circle variables & constants
 	public static int revolutions;  
+	private final double CIRCLE_POWER     = -0.60;   // this is the foward power
+	private final double CIRCLE_ROTATION  = -0.47; // this is the clockwise rotation power
 
 	// Super Shifter pnuematics
 	private DoubleSolenoid  superShifter;
@@ -373,10 +375,13 @@ public class Wheels {
 
 
 	
-	public int circle(double exitAngle, boolean clockwise, int passes)   {
+	public int circle(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
 		int range = 10;
 		double maxRange = exitAngle + range;
 		double minRange = exitAngle - range;
+
+		double circleForward = 0;
+		double circleRotate = 0;
 		
 		//Stops the robot if it's turning for more than 5 seconds
 		long currentMs = System.currentTimeMillis();
@@ -415,12 +420,31 @@ public class Wheels {
 		
 		//state machine that checks to see if a range around the exit angle is entered, and subtracts a revolution if yes
 		//if revolutions is at 0, stop the robot, otherwise keep going
+		/*
 		if(clockwise == true){
 			drive.arcadeDrive(-0.6, -0.47, false);
 		} else if (clockwise == false){
 			drive.arcadeDrive(-0.6, 0.47, false);
 		}
-		
+		*/
+
+		if (clockwise == true) {
+			circleRotate = CIRCLE_ROTATION;
+		} 
+		else if (clockwise == false) {
+			circleRotate = CIRCLE_ROTATION * -1;
+		}
+
+		if (forwardDirection == true) {
+			circleForward = CIRCLE_POWER;
+		} 
+		else if (forwardDirection == false) {
+			circleForward = CIRCLE_POWER * -1;
+
+		}
+		drive.arcadeDrive(circleForward, circleRotate, false);
+
+
 		if(rangeState == CircleRange.IN_RANGE) {
 		
 				

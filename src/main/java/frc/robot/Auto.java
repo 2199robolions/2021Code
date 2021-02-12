@@ -91,37 +91,37 @@ public class Auto {
 				status = wheels.forward(1, 0);
 				break;
 			case 2:
-				status = wheels.circle(-45, false, 0);
+				status = wheels.circle(-45, false, true, 0);
 				break;
 			case 3:
 				status = wheels.forward(4.5, -45);
 				break;
 			case 4:
-				status = wheels.circle(7, true, 0);
+				status = wheels.circle(7, true, true, 0);
 				break;
 			case 5:
 				status = wheels.forward(12.25, 7, -0.7);
 				break;
 			case 6:
-				status = wheels.circle(60, true, 1);
+				status = wheels.circle(60, true, true, 1);
 				break;
 			case 7:
 				status = wheels.forward(2, 52);
 				break;
 			case 8:
-				status = wheels.circle(115, false, 1);
+				status = wheels.circle(115, false, true, 1);
 				break;
 			case 9:
 				status = wheels.forward(1.5, 115);
 				break;
 			case 10:
-				status = wheels.circle(-169.9, true, 1);
+				status = wheels.circle(-169.9, true, true, 1);
 				break;
 			case 11:
 				status = wheels.forward(9.3, 169, -0.6);
 				break;
 			case 12:
-				status = wheels.circle(-135, true, 1);
+				status = wheels.circle(-135, true, true, 1);
 				break;
 			case 13:
 				status = wheels.forward(3.5, -135);
@@ -154,22 +154,76 @@ public class Auto {
 				status = wheels.forward(9.5, 0);
 				break;
 			case 2:
-				status = wheels.circle(-5.0, true, 1);
+				status = wheels.circle(-5.0, true, true, 1);
 				break;
 			case 3:
 				status = wheels.forward(7, -12.5);
 				break;
 			case 4:
-				status = wheels.circle(45, false, 1);
+				status = wheels.circle(45, false, true, 1);
 				break;
 			case 5:
 				status = wheels.forward(7.25, 45);
 				break;
 			case 6:
-				status = wheels.circle(-169, false, 1);
+				status = wheels.circle(-169, false, true, 1);
 				break;
 			case 7:
 				status = wheels.forward(21.0, 169.9, -1.0);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+	//Bounce
+	public int autoBounce() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forward(1, 0);
+				break;
+			case 2:
+				status = wheels.circle(-110.0, false, true, 0);
+				break;
+			case 3:
+				status = wheels.forward(-9, -110);
+				break;
+			case 4:
+				status = wheels.circle(105, false, false, 1);
+				break;
+			case 5:
+				status = wheels.forward(-8.4, 105);
+				break;
+			case 6:
+				status = wheels.forward(6.5, 70);
+				break;
+			case 7:
+				status = wheels.circle(0, false, true, 0);
+				break;
+			case 8:
+				status = wheels.forward(1, 0);
+				break;
+			case 9:
+				status = wheels.circle(-80, false, true, 1);
+				break;
+			case 10:
+				status = wheels.forward(5, -100);
 				break;
 			default:
 				firstTime = true;
