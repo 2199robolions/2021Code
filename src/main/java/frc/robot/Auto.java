@@ -184,6 +184,52 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	//Barrel Race
+	//17.5 seconds
+	public int autoBarrelFullSpeed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forwardFullSpeed(9.5, 0);
+				break;
+			case 2:
+				status = wheels.circle(-5.0, true, true, 1);
+				break;
+			case 3:
+				status = wheels.forwardFullSpeed(7, -12.5);
+				break;
+			case 4:
+				status = wheels.circle(45, false, true, 0);
+				break;
+			case 5:
+				status = wheels.forwardFullSpeed(7.1, 45);
+				break;
+			case 6:
+				status = wheels.circle(-169, false, true, 0);
+				break;
+			case 7:
+				status = wheels.forward(17.0, 169.9, -1.0);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
 	//Bounce (16.4 seconds)
 	public int autoBounce() {
 
@@ -265,7 +311,7 @@ public class Auto {
 				status = wheels.forwardFullSpeed(-9.4, -109);
 				break;
 			case 4:
-				status = wheels.circle(112, false, false, 1);
+				status = wheels.circle(112, false, false, 0);
 				break;
 			case 5:
 				status = wheels.forwardFullSpeed(-8.3, 118);
@@ -274,13 +320,13 @@ public class Auto {
 				status = wheels.forwardFullSpeed(6.2, 68);
 				break;
 			case 7:
-				status = wheels.circle(0, false, true, 1);
+				status = wheels.circle(0, false, true, 0);
 				break;
 			case 8:
 				status = wheels.forwardFullSpeed(1, 0);
 				break;
 			case 9:
-				status = wheels.circle(-80, false, true, 1);
+				status = wheels.circle(-80, false, true, 0);
 				break;
 			case 10:
 				status = wheels.forwardFullSpeed(6.7, -67);

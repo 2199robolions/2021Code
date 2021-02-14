@@ -350,8 +350,6 @@ public class Wheels {
 
 		//Sets power to 1, unless the robot is within 3 feet of target, where it will be 0.6 power
 		tempPower = -1.0;
-		System.out.println("enc diff: " + (encoderTarget - encoderCurrent) + 
-		" tgt: " + (rotationsPerFoot * slowDistance));
 
 		if(Math.abs(encoderTarget - encoderCurrent) < rotationsPerFoot * slowDistance){
 			tempPower = -0.6;
@@ -361,7 +359,6 @@ public class Wheels {
 			tempPower = tempPower * -1;
 		}
 
-		System.out.println("Current Power: " + tempPower);
 		// Drive forward on a set oriantation
 		drive.arcadeDrive( tempPower, turnController.calculate(ahrs.getYaw()) * -1 );
 
@@ -454,14 +451,14 @@ public class Wheels {
 			revolutions = passes;
 			timeOut = currentMs + 5000;
 			firstTime = false;
-			//rangeState = CircleRange.OUT_RANGE;
+			rangeState = CircleRange.OUT_RANGE;
 		}
 		if(currentMs > timeOut){
 
 			drive.arcadeDrive( 0.0, 0.0 );
 			firstTime = true;
 			System.out.println("Timeout");
-			//rangeState = CircleRange.OUT_RANGE;
+			rangeState = CircleRange.OUT_RANGE;
 			return Robot.DONE;
 		}
 
@@ -508,7 +505,7 @@ public class Wheels {
 				drive.arcadeDrive(0.0, 0.0);
 				firstTime = true;
 				System.out.println("Done");
-				//rangeState = CircleRange.OUT_RANGE;
+				rangeState = CircleRange.OUT_RANGE;
 				return Robot.DONE;
 			}
 			
