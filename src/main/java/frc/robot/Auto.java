@@ -139,6 +139,71 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	//Slalom
+	//13.3 seconds
+	public int autoSlalomFullSpeed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forwardFullSpeed(1, 0);
+				break;
+			case 2:
+				status = wheels.circle(-45, false, true, 0);
+				break;
+			case 3:
+				status = wheels.forwardFullSpeed(5.0, -45);
+				break;
+			case 4:
+				status = wheels.circle(-3.5, true, true, 0);
+				break;
+			case 5:
+				status = wheels.forwardFullSpeed(8.6, -3.5);
+				break;
+			case 6:
+				status = wheels.circle(60, true, true, 0);
+				break;
+			case 7:
+				status = wheels.forwardFullSpeed(2, 52);
+				break;
+			case 8:
+				status = wheels.circle(115, false, true, 0);
+				break;
+			case 9:
+				status = wheels.forwardFullSpeed(1.5, 115);
+				break;
+			case 10:
+				status = wheels.circle(169.9, true, true, 0);
+				break;
+			case 11:
+				status = wheels.forwardFullSpeed(10.4, -173);
+				break;
+			case 12:
+				status = wheels.circle(-135, true, true, 0);
+				break;
+			case 13:
+				status = wheels.forwardFullSpeed(3.5, -135);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+
 	//Barrel Race
 	public int autoNavCircle() {
 
