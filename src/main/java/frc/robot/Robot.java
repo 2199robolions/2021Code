@@ -195,6 +195,9 @@ public class Robot extends TimedRobot {
 			//autoStatus = auto.autoNavCircle();
 			autoStatus = auto.autoBounce();
 			
+		} else if (autoStatus == Robot.DONE){
+			endTime = System.nanoTime();
+			System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));	
 		}
 	}
 

@@ -184,7 +184,7 @@ public class Auto {
 		return Robot.CONT;
 	}
 
-	//Bounce
+	//Bounce (16.4 seconds)
 	public int autoBounce() {
 
 		if (firstTime == true) {
@@ -208,10 +208,10 @@ public class Auto {
 				status = wheels.circle(105, false, false, 1);
 				break;
 			case 5:
-				status = wheels.forward(-8.4, 105);
+				status = wheels.forward(-8.6, 105);
 				break;
 			case 6:
-				status = wheels.forward(6.5, 70);
+				status = wheels.forward(6.7, 70);
 				break;
 			case 7:
 				status = wheels.circle(0, false, true, 0);
@@ -223,7 +223,13 @@ public class Auto {
 				status = wheels.circle(-80, false, true, 1);
 				break;
 			case 10:
-				status = wheels.forward(5, -100);
+				status = wheels.forward(5.35, -100);
+				break;
+			/*case 11:
+				status = wheels.circle(-135, false, false, 1);
+				break;*/
+			case 11:
+				status = wheels.forward(-4.75, -135);
 				break;
 			default:
 				firstTime = true;
