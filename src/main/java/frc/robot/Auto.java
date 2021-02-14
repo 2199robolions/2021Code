@@ -244,7 +244,68 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	//Bounce (12.9 seconds)
+	public int autoBounceFullSpeed() {
 
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forwardFullSpeed(1, 0);
+				break;
+			case 2:
+				status = wheels.circle(-110.0, false, true, 0);
+				break;
+			case 3:
+				status = wheels.forwardFullSpeed(-9.4, -109);
+				break;
+			case 4:
+				status = wheels.circle(112, false, false, 1);
+				break;
+			case 5:
+				status = wheels.forwardFullSpeed(-8.3, 118);
+				break;
+			case 6:
+				status = wheels.forwardFullSpeed(6.2, 68);
+				break;
+			case 7:
+				status = wheels.circle(0, false, true, 1);
+				break;
+			case 8:
+				status = wheels.forwardFullSpeed(1, 0);
+				break;
+			case 9:
+				status = wheels.circle(-80, false, true, 1);
+				break;
+			case 10:
+				status = wheels.forwardFullSpeed(6.7, -67);
+				break;
+			case 11:
+				status = wheels.forwardFullSpeed(-6.3, -127);
+				break;
+			/*case 12:
+				grabber.grabberDirection(Grabber.GrabberDirection.FORWARD);
+				grabber.deployRetract();
+				break;*/
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+	
 	/**
 	 * left right or center of target simple shoot and move forward	
 	 */

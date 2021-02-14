@@ -320,6 +320,70 @@ public class Wheels {
 		}
 	}
 
+	public int forwardFullSpeed(double feet, double heading) {
+		double encoderCurrent;
+		//double forwardPower = -.6;          // Negative Push Robot Forward
+		double rotationsPerFoot;
+		double tempPower;
+		double slowDistance = 3;
+
+		// Determines Feet for the Specific Gear Ratio
+		if (shifterState == ShifterState.LOW) {
+			rotationsPerFoot = ROT_PER_FOOT_LOW;
+		} else if (shifterState == ShifterState.HIGH) {
+			rotationsPerFoot = ROT_PER_FOOT_HIGH;
+		} else {
+			rotationsPerFoot = 0;
+		}
+
+		// current encoder values
+		encoderCurrent = encoderLeft_1.getPosition();
+
+		if (firstTime == true) {
+			firstTime = false;
+			turnController.setSetpoint(heading);
+			tempPower = -1.00;
+			//Target encoder values
+			encoderTarget = encoderCurrent - (rotationsPerFoot * feet);
+
+		}
+
+		//Sets power to 1, unless the robot is within 3 feet of target, where it will be 0.6 power
+		tempPower = -1.0;
+		System.out.println("enc diff: " + (encoderTarget - encoderCurrent) + 
+		" tgt: " + (rotationsPerFoot * slowDistance));
+
+		if(Math.abs(encoderTarget - encoderCurrent) < rotationsPerFoot * slowDistance){
+			tempPower = -0.6;
+		}
+
+		if (feet < 0) {
+			tempPower = tempPower * -1;
+		}
+
+		System.out.println("Current Power: " + tempPower);
+		// Drive forward on a set oriantation
+		drive.arcadeDrive( tempPower, turnController.calculate(ahrs.getYaw()) * -1 );
+
+		// Current encoder values
+		encoderCurrent = encoderLeft_1.getPosition();
+
+
+		// Check runtime complete
+		if (((encoderCurrent <= encoderTarget) && (feet >= 0)) ||
+			((encoderCurrent >= encoderTarget) && (feet < 0))) {
+			turnController.reset();
+			drive.arcadeDrive( 0, 0);
+
+			firstTime = true;
+			System.out.println("Yaw: " + ahrs.getYaw());
+			return Robot.DONE; 
+		} 
+		else {
+			return Robot.CONT;
+		}
+	}
+
 	/*
 	 * Autonomous Rotate
 	 */
@@ -390,12 +454,14 @@ public class Wheels {
 			revolutions = passes;
 			timeOut = currentMs + 5000;
 			firstTime = false;
+			//rangeState = CircleRange.OUT_RANGE;
 		}
 		if(currentMs > timeOut){
 
 			drive.arcadeDrive( 0.0, 0.0 );
 			firstTime = true;
 			System.out.println("Timeout");
+			//rangeState = CircleRange.OUT_RANGE;
 			return Robot.DONE;
 		}
 
@@ -420,14 +486,6 @@ public class Wheels {
 		
 		//state machine that checks to see if a range around the exit angle is entered, and subtracts a revolution if yes
 		//if revolutions is at 0, stop the robot, otherwise keep going
-		/*
-		if(clockwise == true){
-			drive.arcadeDrive(-0.6, -0.47, false);
-		} else if (clockwise == false){
-			drive.arcadeDrive(-0.6, 0.47, false);
-		}
-		*/
-
 		if (clockwise == true) {
 			circleRotate = CIRCLE_ROTATION;
 		} 
@@ -444,15 +502,13 @@ public class Wheels {
 		}
 		drive.arcadeDrive(circleForward, circleRotate, false);
 
-
 		if(rangeState == CircleRange.IN_RANGE) {
-		
-				
 			if(revolutions == 0) {
 				//System.out.println("Final Yaw: " + yaw);
 				drive.arcadeDrive(0.0, 0.0);
 				firstTime = true;
 				System.out.println("Done");
+				//rangeState = CircleRange.OUT_RANGE;
 				return Robot.DONE;
 			}
 			
@@ -476,6 +532,7 @@ public class Wheels {
 		}	
 
 		System.out.println("We shouldn't be here");
+		rangeState = CircleRange.OUT_RANGE;
 		return Robot.DONE;
 
 	}

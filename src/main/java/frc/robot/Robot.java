@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 		if (autoStatus == Robot.CONT) {
 			//Robot starts 1 foot from right edge of starting box
 			//autoStatus = auto.autoNavCircle();
-			autoStatus = auto.autoBounce();
+			autoStatus = auto.autoBounceFullSpeed();
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
@@ -286,7 +286,7 @@ public class Robot extends TimedRobot {
 		//wheels.testPid();
 		//wheels.testArcadeRotation();
 		if(autoStatus == Robot.CONT){
-			autoStatus = wheels.circle(90, false, false, 0);
+			autoStatus = wheels.forwardFullSpeed(-10.0, 0);
 		}
 		//wheels.testRotation(-90);
 		
