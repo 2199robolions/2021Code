@@ -121,8 +121,11 @@ public class Wheels {
 
 	//Circle variables & constants
 	public static int revolutions;  
-	private final double CIRCLE_POWER     = -0.60;   // this is the foward power
-	private final double CIRCLE_ROTATION  = -0.47; // this is the clockwise rotation power
+	private static double CIRCLE_POWER     = -0.60;   // this is the foward power
+	private static double CIRCLE_ROTATION  = -0.47; // this is the clockwise rotation power
+	//-0.60, -0.47 original
+	//-0.80, -0.64 fast
+	//-0.90, -0.76(4) super fast
 
 	// Super Shifter pnuematics
 	private DoubleSolenoid  superShifter;
@@ -434,8 +437,22 @@ public class Wheels {
 	}
 
 
+	public int circleSlow(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
+		CIRCLE_POWER = -0.6;
+		CIRCLE_ROTATION = -0.47;
+		return circle(exitAngle, clockwise, forwardDirection, passes);
+	}
+	public int circleMedium(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
+		CIRCLE_POWER = -0.8;
+		CIRCLE_ROTATION = -0.64;
+		return circle(exitAngle, clockwise, forwardDirection, passes);
+	}
+	public int circleFast(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
+		CIRCLE_POWER = -0.9;
+		CIRCLE_ROTATION = -0.76;
+		return circle(exitAngle, clockwise, forwardDirection, passes);
+    }
 
-	
 	public int circle(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
 		int range = 10;
 		double maxRange = exitAngle + range;
@@ -479,7 +496,6 @@ public class Wheels {
 
 		//Get angle of the robot for the yaw
 		double yaw = ahrs.getYaw();
-		System.out.println("Yaw: " + yaw);
 		
 		//state machine that checks to see if a range around the exit angle is entered, and subtracts a revolution if yes
 		//if revolutions is at 0, stop the robot, otherwise keep going
