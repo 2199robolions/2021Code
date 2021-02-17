@@ -460,6 +460,8 @@ public class Wheels {
 
 		double circleForward = 0;
 		double circleRotate = 0;
+
+		boolean edgeCase = false;
 		
 		//Stops the robot if it's turning for more than 5 seconds
 		long currentMs = System.currentTimeMillis();
@@ -479,6 +481,9 @@ public class Wheels {
 			return Robot.DONE;
 		}
 
+		if(exitAngle > 170 || exitAngle < -170){
+			edgeCase = true;
+		}
 
 		//Bringing range windows into usable domain
 		if(maxRange > 180)  {
@@ -520,27 +525,46 @@ public class Wheels {
 				//System.out.println("Final Yaw: " + yaw);
 				drive.arcadeDrive(0.0, 0.0);
 				firstTime = true;
-				System.out.println("Done");
+				System.out.println("Done: " + yaw + " Target: " + exitAngle + " min: " + minRange + " max: " + maxRange);
 				rangeState = CircleRange.OUT_RANGE;
 				return Robot.DONE;
 			}
 			
-			if(minRange <= yaw && yaw <= maxRange){
-				//do nothing
-				return Robot.CONT;
-			} else {
-				revolutions--;
-				rangeState = CircleRange.OUT_RANGE;
-				return Robot.CONT;
+			if(edgeCase == false){
+				if(minRange <= yaw && yaw <= maxRange){
+					//do nothing
+					return Robot.CONT;
+				} else {
+					revolutions--;
+					rangeState = CircleRange.OUT_RANGE;
+					return Robot.CONT;
+				}
+			} 
+			else if(edgeCase == true){ //If it's around 180 degrees, it uses an OR instead of AND statement
+				if(minRange <= yaw || yaw <= maxRange){
+					//do nothing
+					return Robot.CONT;
+				} else {
+					revolutions--;
+					rangeState = CircleRange.OUT_RANGE;
+					return Robot.CONT;
+				}
 			}
 			
 			
 
 		} else if(rangeState == CircleRange.OUT_RANGE) {
 				
-			if(minRange <= yaw && yaw <= maxRange) {
-				rangeState = CircleRange.IN_RANGE;
-			} 
+			if(edgeCase == false){
+				if(minRange <= yaw && yaw <= maxRange) {
+					rangeState = CircleRange.IN_RANGE;
+				} 
+			}
+			else if(edgeCase == true){
+				if(minRange <= yaw || yaw <= maxRange) {
+					rangeState = CircleRange.IN_RANGE;
+				} 
+			}
 			return Robot.CONT;
 		}	
 
