@@ -286,8 +286,9 @@ public class Robot extends TimedRobot {
 		//wheels.testPid();
 		//wheels.testArcadeRotation();
 		if(autoStatus == Robot.CONT){
-			autoStatus = wheels.circleFast(-180.0, false, true, 0);
+			autoStatus = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
 		}
+		//wheels.testArcadeRotation();
 		//wheels.testRotation(-90);
 		
 	}

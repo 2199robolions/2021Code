@@ -114,8 +114,8 @@ public class Wheels {
 	//Target Controller
 	private int limeCount = 0;
 	private PIDController targetController;
-	private static final double tP = 0.05;
-	private static final double tI = 0.20;
+	private static final double tP = 0.02; //0.2
+	private static final double tI = 0.02;//0.20 old value 0.015
 	private static final double tD = 0.00;
 	private static final double tToleranceDegrees = 1.00f;
 
@@ -228,7 +228,7 @@ public class Wheels {
 		
 		/* Max/Min input values.  Inputs are continuous/circle */
 		turnController.enableContinuousInput(-180.0, 180.0);
-		targetController.enableContinuousInput(-27.0, 27.0);
+		//targetController.enableContinuousInput(-27.0, 27.0);
 
 		/* Max/Min output values */
 		//Turn Controller
@@ -582,18 +582,22 @@ public class Wheels {
 		long currentMs = System.currentTimeMillis();
 
 		if (limeLightFirstTime == true) {
+			noTargetCount = 0;
+			limeCount = 0;
 			targetController.setSetpoint(0.0);
 			changeLimelightLED(LIMELIGHT_ON);
 			ledLights.limelightAdjusting();
-			timeOut = currentMs + 2000;       // two second time out
+			timeOut = currentMs + 4000;       // two second time out
 			limeLightFirstTime = false;
-			// System.out.println("TimeOut " + timeOut);
+			System.out.println("TimeOut " + timeOut);
 		}
 
 		// Whether the limelight has any valid targets (0 or 1)
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		// Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees) [54 degree tolerance]
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+		System.out.println("tx: " + tx);
+
 		// Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees) [41 degree tolerance]
 		//double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		// Target Area (0% of image to 100% of image) [Basic way to determine distance]
@@ -628,16 +632,20 @@ public class Wheels {
 
 		// Rotate
 		m_LimelightCalculatedDist = targetController.calculate(tx, 0.0);
-		drive.arcadeDrive( 0.0, m_LimelightCalculatedDist);
+		m_LimelightCalculatedDist = MathUtil.clamp(m_LimelightCalculatedDist, -1.00, 1.00);
+		drive.arcadeDrive( 0.0, m_LimelightCalculatedDist, false);
+		System.out.println("Pid out: " + m_LimelightCalculatedDist);
 
 		// CHECK: Routine Complete
 		if (targetController.atSetpoint() == true) {
 			limeCount++;
+			System.out.println("On target");
 		} 
-		else if (m_LimelightCalculatedDistPrev != 0.0 && 
+		/*else if (m_LimelightCalculatedDistPrev != 0.0 && 
 				Math.abs(m_LimelightCalculatedDist - m_LimelightCalculatedDistPrev) <= 0.01) {
+				System.out.println("Off target but not moving");
 			limeCount++;
-		} 
+		} */
 
 		if (limeCount >= ON_TARGET_COUNT) {
 			targetController.reset();
@@ -645,6 +653,7 @@ public class Wheels {
 			limeLightFirstTime = true;
 			drive.arcadeDrive( 0.0, 0.0 );
 			ledLights.limelightFinished();
+			System.out.println("On target or not moving");
 
 			return Robot.DONE;
 		}
@@ -806,7 +815,7 @@ public class Wheels {
 	}
 
 	public void testArcadeRotation(){
-		drive.arcadeDrive( 0.0, 0.25, false);
+		drive.arcadeDrive( 0.0, 0.1, false);
 	}
 
 	public void testRotation(double degrees){
