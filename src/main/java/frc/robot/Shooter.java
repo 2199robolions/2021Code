@@ -4,6 +4,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 // Variables
@@ -74,13 +75,16 @@ public class Shooter {
 	public final double MAX_TARGET_RPM       = 5300;  //5400 was old constant
 	public final double OFF_TARGET_RPM       = 0;
 	private final double ERROR_TARGET_RPM    = 50.0;
-	public final double TEN_FOOT_TARGET_RPM  = (TEN_FOOT_POWER  * MAX_TARGET_RPM) - ERROR_TARGET_RPM; 
+	//public final double TEN_FOOT_TARGET_RPM  = (TEN_FOOT_POWER  * MAX_TARGET_RPM) - ERROR_TARGET_RPM; 
+	//public final double TEN_FOOT_TARGET_RPM  = (TEN_FOOT_POWER  * MAX_TARGET_RPM); 
+	public final double TEN_FOOT_TARGET_RPM  = 3620; 
 	public final double TRENCH_TARGET_RPM    = (TRENCH_POWER    * MAX_TARGET_RPM) - 125.0;
 	public final double HAIL_MARY_TARGET_RPM = (HAIL_MARY_POWER * MAX_TARGET_RPM) - 275;
 
 	
-	private double targetVelocity;
+	public double targetVelocity; //was private
 	private double targetPower;
+	private int targetCount = 0;
 
 	public static enum ShootLocation {
 		OFF,
@@ -94,7 +98,7 @@ public class Shooter {
 
 	private final double kToleranceDegrees = 2.0f;
 
-	private static final double kP = 0.0001;
+	private static final double kP = 0.0003; //0.0001 old value
 	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 	
@@ -111,8 +115,8 @@ public class Shooter {
 		shooter_2.set(0.0);
 
 		// Encoders
-		encoder_Shooter_1 = new CANEncoder(shooter_1);
-		encoder_Shooter_2 = new CANEncoder(shooter_2);
+		encoder_Shooter_1 = shooter_1.getEncoder();
+		encoder_Shooter_2 = shooter_2.getEncoder();
 
 		shooterController = new PIDController(kP, kI, kD);
 	  //  shooterController.enableContinuousInput(0.0, 5500.0);
@@ -153,7 +157,9 @@ public class Shooter {
 
 		power = MathUtil.clamp(targetPower + powerError, 0.0, 1.0);
 		System.out.println("power:" + power + " rpm:" + encoder_Shooter_1.getVelocity());
-		
+		SmartDashboard.putNumber("power", power);
+		SmartDashboard.putNumber("rpm", encoder_Shooter_1.getVelocity());
+
 		shooter_1.set(power);
 		shooter_2.set(power * -1); 
 	}
@@ -193,16 +199,23 @@ public class Shooter {
 		rpm = encoder_Shooter_1.getVelocity();
 		if ( (rpm > (targetVelocity - ERROR_TARGET_RPM)) &&
 			 (rpm < (targetVelocity + ERROR_TARGET_RPM)) )  {
-			return true;
+			targetCount ++;
+			if(targetCount >= 10){
+				return true;
+			} 
+			else{
+				return false;
+			}
 		}
 		else {
+			targetCount = 0;
 			return false;
 		}
 	}
 
 	public boolean shooterReady() {
 
-	System.out.println("velocity:" + encoder_Shooter_1.getVelocity() + " tgtVelocity:" + targetVelocity);
+	//System.out.println("velocity:" + encoder_Shooter_1.getVelocity() + " tgtVelocity:" + targetVelocity);
 		if (encoder_Shooter_1.getVelocity() >= targetVelocity) {
 			return true;
 		}

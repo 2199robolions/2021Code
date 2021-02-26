@@ -690,7 +690,7 @@ public class Wheels {
 		}
 	}
 
-	private static final double CameraMountingAngle = 22.0;	// 25.6 degrees
+	private static final double CameraMountingAngle = 22.0;	// 25.6 degrees, 22.0
 	private static final double CameraHeightFeet 	= 26.5 / 12;	        // 16.5 inches
 	private static final double VisionTapeHeightFt 	= 7 + (7.5 / 12.0) ;	// 8ft 2.25 inches
 	

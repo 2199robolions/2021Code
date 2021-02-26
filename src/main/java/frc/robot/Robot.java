@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 		if (autoStatus == Robot.CONT) {
 			//Robot starts 1 foot from right edge of starting box
 			//autoStatus = auto.autoNavCircle();
-			autoStatus = auto.autoBounceSuperSpeed();
+			autoStatus = auto.autoSlalomSuperSpeed();
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
@@ -285,12 +285,12 @@ public class Robot extends TimedRobot {
 		//wheels.testYaw();
 		//wheels.testPid();
 		//wheels.testArcadeRotation();
-		if(autoStatus == Robot.CONT){
-			autoStatus = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
-		}
 		//wheels.testArcadeRotation();
 		//wheels.testRotation(-90);
-		
+		double tempPower = 0.65;
+		tempPower = SmartDashboard.getNumber("Input Power", 0);
+		shooter.testShoooter(tempPower);
+		System.out.println("Power: " + tempPower);		
 	}
 
 
@@ -531,8 +531,9 @@ public class Robot extends TimedRobot {
 				shooter.manualShooterControl( Shooter.ShootLocation.TRENCH );
 			}
 			else {
-				shooter.manualShooterControl( Shooter.ShootLocation.TEN_FOOT );
+				shooter.autoShooterControl(Shooter.ShootLocation.TEN_FOOT);
 			}
+			
 		}
 		else  {
 			shooter.manualShooterControl( Shooter.ShootLocation.OFF );
@@ -564,7 +565,8 @@ public class Robot extends TimedRobot {
 			}
 			else {
 				// Waits for Shooter to Get Up to Speed
-				if ( shooter.shooterReady() == true ) {
+				//if ( shooter.shooterReady() == true ) {
+				if (shooter.shooterReadyAuto() == true){
 System.out.println("shooter ready");
 					// Shooter at required RPM, Turn Conveyers On
 					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
