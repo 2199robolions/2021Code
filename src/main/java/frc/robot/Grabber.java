@@ -21,7 +21,7 @@ public class Grabber {
     //SPARK MAX ID's
     private static final int SPARK_ID  = 11;
 
-    private int GRABBER_CURRENT_LIMIT = 20;
+    private int GRABBER_CURRENT_LIMIT = 30;
 
     // Enumerator for Grabber States
     public static enum GrabberState {
@@ -30,7 +30,7 @@ public class Grabber {
     }
     private GrabberState grabberState;
 
-    private final double GRABBER_POWER = .6;
+    private final double GRABBER_POWER = -0.8;  //0.7
 //    private final double GRABBER_POWER = 1.0;
 
     // Enumerater for Grabber State
@@ -85,12 +85,12 @@ public class Grabber {
 
         // Grabber Intake (Negative Power Brings Ball In)
         if (dir == GrabberDirection.FORWARD) {
-            grabberMotor.set(GRABBER_POWER * -1);
+            grabberMotor.set(GRABBER_POWER);
             
         }
         // Grabber Reverse
         else if (dir == GrabberDirection.REVERSE) {
-            grabberMotor.set(GRABBER_POWER);
+            grabberMotor.set(GRABBER_POWER * -1);
         }
         else {
             grabberMotor.set(0.0);
