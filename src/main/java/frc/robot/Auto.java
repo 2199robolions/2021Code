@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import frc.robot.Grabber.GrabberDirection;
+
 public class Auto {
 	private LedLights  led;
 	private int        step;
@@ -543,6 +545,47 @@ public class Auto {
 				status = wheels.forwardFullSpeed(-8.0, -127);
 				break;
 			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+	public int autoGalacticSearchARed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				grabber.grabberDirection(GrabberDirection.FORWARD);
+				conveyer.autoHorizontalControl();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = wheels.forwardFullSpeed(6.5, 38);
+				conveyer.autoHorizontalControl();
+				break;
+			case 3:
+				status = wheels.circleFast(-80, false, true, 0);
+				conveyer.autoHorizontalControl();
+				break;
+			case 4:
+				status = wheels.forward(3, -80);
+				conveyer.autoHorizontalControl();
+				break;
+			default:
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
 				firstTime = true;
 				return Robot.DONE;
 		}

@@ -85,12 +85,12 @@ public class Grabber {
 
         // Grabber Intake (Negative Power Brings Ball In)
         if (dir == GrabberDirection.FORWARD) {
-            grabberMotor.set(GRABBER_POWER);
+            grabberMotor.set(GRABBER_POWER * -1);
             
         }
         // Grabber Reverse
         else if (dir == GrabberDirection.REVERSE) {
-            grabberMotor.set(GRABBER_POWER * -1);
+            grabberMotor.set(GRABBER_POWER);
         }
         else {
             grabberMotor.set(0.0);

@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 		if (autoStatus == Robot.CONT) {
 			//Robot starts 1 foot from right edge of starting box
 			//autoStatus = auto.autoNavCircle();
-			autoStatus = auto.autoSlalomSuperSpeed();
+			autoStatus = auto.autoGalacticSearchARed();
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
@@ -287,10 +287,12 @@ public class Robot extends TimedRobot {
 		//wheels.testArcadeRotation();
 		//wheels.testArcadeRotation();
 		//wheels.testRotation(-90);
-		double tempPower = 0.65;
+		/*double tempPower = 0.65;
 		tempPower = SmartDashboard.getNumber("Input Power", 0);
 		shooter.testShoooter(tempPower);
-		System.out.println("Power: " + tempPower);		
+		System.out.println("Power: " + tempPower);	
+		*/
+		wheels.testYaw();	
 	}
 
 
