@@ -115,7 +115,7 @@ public class Wheels {
 	private int limeCount = 0;
 	private PIDController targetController;
 	private static final double tP = 0.02; //0.2
-	private static final double tI = 0.02;//0.20 old value 0.015
+	private static final double tI = 0.022;//0.02              0.20 old value 0.015
 	private static final double tD = 0.00;
 	private static final double tToleranceDegrees = 1.00f;
 

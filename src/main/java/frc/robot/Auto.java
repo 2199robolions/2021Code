@@ -209,10 +209,10 @@ public class Auto {
 				status = wheels.forwardFullSpeed(1.5, 115);
 				break;
 			case 10:
-				status = wheels.circleFast(169.9, true, true, 0);
+				status = wheels.circleFast(165, true, true, 0);
 				break;
 			case 11:
-				status = wheels.forwardFullSpeed(10.4, -173);
+				status = wheels.forwardFullSpeed(10.4, 175);
 				break;
 			case 12:
 				status = wheels.circle(-135, true, true, 0);

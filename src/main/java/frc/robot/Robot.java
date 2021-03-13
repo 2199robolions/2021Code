@@ -191,9 +191,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			//Robot starts 1 foot from right edge of starting box
-			//autoStatus = auto.autoNavCircle();
-			autoStatus = auto.autoGalacticSearchARed();
+			autoStatus = auto.autoBounceSuperSpeed();
+			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
@@ -231,6 +230,11 @@ public class Robot extends TimedRobot {
 		
 	}
 
+	@Override
+	public void teleopInit() {
+		startTime           = System.nanoTime();   
+	}
+
 	/**
 	 * This function is called periodically during operator control.
 	 */
@@ -256,6 +260,11 @@ public class Robot extends TimedRobot {
 		 *     Climber
 		 *****************************************************************/
 		climberControl();
+
+		/*****************************************************************
+		 * 	   Timer
+		 */
+		SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0));
 	}
 
 	
@@ -287,12 +296,15 @@ public class Robot extends TimedRobot {
 		//wheels.testArcadeRotation();
 		//wheels.testArcadeRotation();
 		//wheels.testRotation(-90);
-		/*double tempPower = 0.65;
+
+		double tempPower = 0.65;
 		tempPower = SmartDashboard.getNumber("Input Power", 0);
 		shooter.testShoooter(tempPower);
 		System.out.println("Power: " + tempPower);	
-		*/
-		wheels.testYaw();	
+		conveyer.manualVerticalControl(controller.getVerticalBeltState());   
+		conveyer.manualHorizontalControl(controller.getHorizonalBeltState());   
+
+
 	}
 
 
@@ -540,7 +552,6 @@ public class Robot extends TimedRobot {
 		else  {
 			shooter.manualShooterControl( Shooter.ShootLocation.OFF );
 		}
-
 
 		/*****   Conveyer Control   *****/
 		// Can't have grabber & shooter on at same time
