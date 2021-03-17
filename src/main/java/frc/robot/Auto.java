@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import frc.robot.Conveyer.ConveyerState;
 import frc.robot.Grabber.GrabberDirection;
 
 public class Auto {
@@ -24,6 +25,7 @@ public class Auto {
 
 	private final int TEST_DELAY = 1000;
 	private final int SHOOT_TIME = 5000;
+
 
 	/**
 	 * CONTRUCTOR
@@ -567,13 +569,14 @@ public class Auto {
 		int status = Robot.CONT;
 
 		switch(step) {
-			case 1:
+			case 1: //Start with grabber retracted
+				grabber.deployRetract();
 				grabber.grabberDirection(GrabberDirection.FORWARD);
 				conveyer.autoHorizontalControl();
 				status = Robot.DONE;
 				break;
 			case 2:
-				status = wheels.forwardFullSpeed(6.5, 38);
+				status = wheels.forwardFullSpeed(6.9, 38);//5.5 old
 				conveyer.autoHorizontalControl();
 				break;
 			case 3:
@@ -581,8 +584,16 @@ public class Auto {
 				conveyer.autoHorizontalControl();
 				break;
 			case 4:
-				status = wheels.forward(3, -80);
+				status = wheels.forwardFullSpeed(4.5, -75);
 				conveyer.autoHorizontalControl();
+				break;
+			case 5:
+				status = wheels.circle(180, false, false, 0);//-150
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				break;
+			case 6:
+				status = wheels.forwardFullSpeed(-12.25, 180);
+				conveyer.manualHorizontalControl(ConveyerState.OFF);
 				break;
 			default:
 				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);

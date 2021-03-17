@@ -86,6 +86,16 @@ public class Robot extends TimedRobot {
 	private String alliance;
 	private final SendableChooser<String> allianceColor = new SendableChooser<>();
 
+	//Enumeration of galactic search paths
+	private static enum GalacticPath {
+		A_RED,
+		A_BLUE,
+		B_RED,
+		B_BLUE,
+		UNKNOWN_PATH;
+	}
+	private GalacticPath galacticPath = GalacticPath.UNKNOWN_PATH;
+
 	/** 
 	 * Constructor
 	 */
@@ -182,7 +192,14 @@ public class Robot extends TimedRobot {
 		m_delaySelected     = m_delayChooser.getSelected();
 		delaySeconds        = Integer.parseInt(m_delaySelected);
 		autoStatus          = Robot.CONT;  
-		startTime           = System.nanoTime();   
+		startTime           = System.nanoTime();  
+		double yaw			= wheels.getYaw();
+
+		if((yaw > 30) && (yaw < 45)){
+			galacticPath = GalacticPath.A_RED;
+			SmartDashboard.putString("Path", "A_RED");
+		}
+
 	}
 
 	/**
@@ -191,7 +208,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			autoStatus = auto.autoBounceSuperSpeed();
+			autoStatus = auto.autoGalacticSearchARed();
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){

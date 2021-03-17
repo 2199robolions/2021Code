@@ -767,6 +767,11 @@ public class Wheels {
 		NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(mode);
 	}
 
+	//Returns yaw
+	public double getYaw(){
+		return ahrs.getYaw();
+	}
+
 	/**
 	 * DEBUG / TEST FUNCTIONS
 	 */
