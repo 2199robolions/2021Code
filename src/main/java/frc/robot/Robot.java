@@ -195,9 +195,18 @@ public class Robot extends TimedRobot {
 		startTime           = System.nanoTime();  
 		double yaw			= wheels.getYaw();
 
-		if((yaw > 30) && (yaw < 45)){
+		if((yaw > 33) && (yaw < 42)){
 			galacticPath = GalacticPath.A_RED;
 			SmartDashboard.putString("Path", "A_RED");
+		} else if ((yaw > 13) && (yaw < 27)){
+			galacticPath = GalacticPath.B_RED;
+			SmartDashboard.putString("Path", "B_RED");			
+		} else if ((yaw > -7) && (yaw < 7)){
+			galacticPath = GalacticPath.A_BLUE;
+			SmartDashboard.putString("Path", "A_BLUE");			
+		} else if ((yaw < -12) && (yaw > -26)){
+			galacticPath = GalacticPath.B_BLUE;
+			SmartDashboard.putString("Path", "B_BLUE");	
 		}
 
 	}
@@ -208,7 +217,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			autoStatus = auto.autoGalacticSearchARed();
+			autoStatus = auto.autoGalacticSearchBBlue();
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
@@ -314,12 +323,15 @@ public class Robot extends TimedRobot {
 		//wheels.testArcadeRotation();
 		//wheels.testRotation(-90);
 
+		/*
 		double tempPower = 0.65;
 		tempPower = SmartDashboard.getNumber("Input Power", 0);
 		shooter.testShoooter(tempPower);
 		System.out.println("Power: " + tempPower);	
 		conveyer.manualVerticalControl(controller.getVerticalBeltState());   
 		conveyer.manualHorizontalControl(controller.getHorizonalBeltState());   
+		*/
+		System.out.println("yaw: " + wheels.getYaw());
 
 
 	}

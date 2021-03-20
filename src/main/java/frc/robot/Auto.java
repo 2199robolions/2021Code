@@ -559,6 +559,7 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+
 	public int autoGalacticSearchARed() {
 
 		if (firstTime == true) {
@@ -610,6 +611,180 @@ public class Auto {
 	}
 
 
+	public int autoGalacticSearchBRed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1: //Start with grabber retracted
+				grabber.deployRetract();
+				grabber.grabberDirection(GrabberDirection.FORWARD);
+				conveyer.autoHorizontalControl();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = wheels.forwardFullSpeed(3.0, 20);//5.5 old
+				conveyer.autoHorizontalControl();
+				break;
+			case 3:
+				status = wheels.circleFast(40, true, true, 0);
+				conveyer.autoHorizontalControl();
+				break;
+			case 4:
+				status = wheels.forwardFullSpeed(4.5, 40);
+				conveyer.autoHorizontalControl();
+				break;
+			case 5:
+				status = wheels.circleFast(-35, false, true, 0);
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				break;
+			case 6:
+				status = wheels.forwardFullSpeed(4, -35);
+				conveyer.manualHorizontalControl(ConveyerState.OFF);
+				break;
+			case 7:
+				status = wheels.circleFast(-132, false, false, 0);
+				conveyer.autoHorizontalControl();
+				break;
+			case 8:
+				status = wheels.forwardFullSpeed(-14, 180);
+				break;
+			default:
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+
+	public int autoGalacticSearchABlue() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1: //Start with grabber retracted
+				grabber.deployRetract();
+				grabber.grabberDirection(GrabberDirection.FORWARD);
+				conveyer.autoHorizontalControl();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = wheels.forwardFullSpeed(9, 0);//5.5 old
+				conveyer.autoHorizontalControl();
+				break;
+			case 3:
+				status = wheels.circleFast(-65, false, true, 0);
+				conveyer.autoHorizontalControl();
+				break;
+			case 4:
+				status = wheels.forwardFullSpeed(4.5, -65);
+				conveyer.autoHorizontalControl();
+				break;
+			case 5:
+				status = wheels.circle(20, true, true, 0);//-150
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				break;
+			case 6:
+				status = wheels.forwardFullSpeed(4, 20);
+				conveyer.manualHorizontalControl(ConveyerState.OFF);
+				break;
+			case 7:
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 8:
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				status = wheels.forwardFullSpeed(5.0, 0);//4.5
+				break;
+			default:
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+	public int autoGalacticSearchBBlue() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1: //Start with grabber retracted
+				grabber.deployRetract();
+				grabber.grabberDirection(GrabberDirection.FORWARD);
+				conveyer.autoHorizontalControl();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = wheels.forwardFullSpeed(10, -19);
+				conveyer.autoHorizontalControl();
+				break;
+			case 3:
+				status = wheels.circleFast(-38, false, true, 0);
+				conveyer.autoHorizontalControl();
+				break;
+			case 4:
+				status = wheels.forwardFullSpeed(4.5, -38);
+				conveyer.autoHorizontalControl();
+				break;
+			case 5:
+				status = wheels.circle(25, true, true, 0);//-150
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				break;
+			case 6:
+				status = wheels.forwardFullSpeed(6, 25);
+				conveyer.manualHorizontalControl(ConveyerState.OFF);
+				break;
+			case 7:
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 8:
+				conveyer.manualHorizontalControl(ConveyerState.FORWARD);
+				status = wheels.forwardFullSpeed(4.0, 15);//4.5
+				break;
+			default:
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
 
 
 	public int autoCircleTest() {
@@ -638,6 +813,7 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	
 	
 	/**
 	 * left right or center of target simple shoot and move forward	
