@@ -68,18 +68,16 @@ public class Shooter {
 
 	// CONSTANTS
 	public final double OFF_POWER       = 0.00;
-	public final double TEN_FOOT_POWER  = 0.66;//0.65
-	public final double TRENCH_POWER    = 0.70;
+	public final double TEN_FOOT_POWER  = 0.665;
+	public final double TRENCH_POWER    = 0.63;//.60
 	public final double HAIL_MARY_POWER = 1.00;
 
-	public final double MAX_TARGET_RPM       = 5300;  //5400 was old constant
+	public final double MAX_TARGET_RPM       = 5300; 
 	public final double OFF_TARGET_RPM       = 0;
-	private final double ERROR_TARGET_RPM    = 150.0;
-	//public final double TEN_FOOT_TARGET_RPM  = (TEN_FOOT_POWER  * MAX_TARGET_RPM) - ERROR_TARGET_RPM; 
-	//public final double TEN_FOOT_TARGET_RPM  = (TEN_FOOT_POWER  * MAX_TARGET_RPM); 
-	public final double TEN_FOOT_TARGET_RPM  = 3700; 
-	public final double TRENCH_TARGET_RPM    = (TRENCH_POWER    * MAX_TARGET_RPM) - 125.0;
-	public final double HAIL_MARY_TARGET_RPM = (HAIL_MARY_POWER * MAX_TARGET_RPM) - 275;
+	private final double ERROR_TARGET_RPM    = 50.0;
+	public final double TEN_FOOT_TARGET_RPM  = 3750; 
+	public final double TRENCH_TARGET_RPM    = 3500;//3350
+	public final double HAIL_MARY_TARGET_RPM = 5375;
 
 	
 	public double targetVelocity; //was private
@@ -98,7 +96,7 @@ public class Shooter {
 
 	private final double kToleranceDegrees = 2.0f;
 
-	private static final double kP = 0.0003; //0.0001 old value
+	private static final double kP = 0.0004; //0.0003 old value
 	private static final double kI = 0.00;
 	private static final double kD = 0.00;
 	
@@ -197,6 +195,7 @@ public class Shooter {
 		double rpm;
 
 		rpm = encoder_Shooter_1.getVelocity();
+		System.out.println("RPM: " + rpm);
 		if ( (rpm > (targetVelocity - ERROR_TARGET_RPM)) &&
 			 (rpm < (targetVelocity + ERROR_TARGET_RPM)) )  {
 			targetCount ++;

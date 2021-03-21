@@ -568,13 +568,13 @@ public class Robot extends TimedRobot {
 		/*****   Shooter Control   *****/
 		if (shooterEnable == true) {
 			if (hailMary == true) {
-				shooter.manualShooterControl( Shooter.ShootLocation.HAIL_MARY );
+				shooter.autoShooterControl( Shooter.ShootLocation.HAIL_MARY );//manual
 			}
 			else if (trenchShot == true) {
-				shooter.manualShooterControl( Shooter.ShootLocation.TRENCH );
+				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );//manual
 			}
 			else {
-				shooter.autoShooterControl(Shooter.ShootLocation.TEN_FOOT);
+				shooter.autoShooterControl(Shooter.ShootLocation.TEN_FOOT);//auto uses pid
 			}
 			
 		}
