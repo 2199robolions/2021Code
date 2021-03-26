@@ -343,25 +343,25 @@ public class Auto {
 
 		switch(step) {
 			case 1:
-				status = wheels.forwardFullSpeed(9.5, 0);
+				status = wheels.forwardFullSpeed(9.5, 0, 1.5); //Adding 1.5 ft param to decrease slowing down distance
 				break;
 			case 2:
 				status = wheels.circleFast(-20.0, true, true, 0);
 				break;
 			case 3:
-				status = wheels.forwardFullSpeed(7.9, -20.0);
+				status = wheels.forwardFullSpeed(7.9, -20.0, 1.5);
 				break;
 			case 4:
-				status = wheels.circleFast(53, false, true, 0);
+				status = wheels.circleFast(49, false, true, 0);
 				break;
 			case 5:
-				status = wheels.forwardFullSpeed(7.25, 53);
+				status = wheels.forwardFullSpeed(6.75, 49, 1.5);//7.25
 				break;
 			case 6:
-				status = wheels.circleFast(-169, false, true, 0);
+				status = wheels.circleFast(-170, false, true, 0);//-169.9
 				break;
 			case 7:
-				status = wheels.forward(16.8, 169.9, -1.0);
+				status = wheels.forward(18.6, 175, -1.0); //169.9 yes they're opposite
 				break;
 			default:
 				firstTime = true;

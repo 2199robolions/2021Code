@@ -324,11 +324,15 @@ public class Wheels {
 	}
 
 	public int forwardFullSpeed(double feet, double heading) {
+		return forwardFullSpeed(feet, heading, 3.0);
+	}
+
+	public int forwardFullSpeed(double feet, double heading, double slowDown) {
 		double encoderCurrent;
 		//double forwardPower = -.6;          // Negative Push Robot Forward
 		double rotationsPerFoot;
 		double tempPower;
-		double slowDistance = 3;
+		double slowDistance = slowDown;
 
 		// Determines Feet for the Specific Gear Ratio
 		if (shifterState == ShifterState.LOW) {
