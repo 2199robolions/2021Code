@@ -236,6 +236,71 @@ public class Auto {
 	}
 
 
+	//Slalom
+	//11.0 seconds
+	public int autoSlalomSuperDuperSpeed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forwardFullSpeed(0.75, 0, 0);
+				break;
+			case 2:
+				status = wheels.circleSuperFast(-45, false, true, 0);
+				break;
+			case 3:
+				status = wheels.forwardFullSpeed(3.5, -45, 1.5);
+				break;
+			case 4:
+				status = wheels.circleSuperFast(-27.0, true, true, 0);
+				break;
+			case 5:
+				status = wheels.forwardFullSpeed(10.6, 3.0, 1.5);
+				break;
+			case 6:
+				status = wheels.circleSuperFast(40, true, true, 0);
+				break;
+			case 7:
+				status = wheels.forwardFullSpeed(1.8, 52, 0);
+				break;
+			case 8:
+				status = wheels.circleSuperFast(115, false, true, 0);
+				break;
+			case 9:
+				status = wheels.forwardFullSpeed(0.75, 90, 0);
+				break;
+			case 10:
+				status = wheels.circleSuperFast(150, true, true, 0);
+				break;
+			case 11:
+				status = wheels.forwardFullSpeed(10.7, 175, 1.5);
+				break;
+			case 12:
+				status = wheels.circleSuperFast(-150, true, true, 0);
+				break;
+			case 13:
+				status = wheels.forwardFullSpeed(4.0, -150, 1.5);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+
 
 
 
@@ -362,6 +427,50 @@ public class Auto {
 				break;
 			case 7:
 				status = wheels.forward(18.6, 175, -1.0); //169.9 yes they're opposite
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
+
+	public int autoBarrelSuperDuperSpeed() {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = wheels.forwardFullSpeed(8.6, -2, 1.5); //Adding 1.5 ft param to decrease slowing down distance
+				break;
+			case 2:
+				status = wheels.circleSuperFast(-40.0, true, true, 0);
+				break;
+			case 3:
+				status = wheels.forwardFullSpeed(9.7, -4.5, 1.5);
+				break;
+			case 4:
+				status = wheels.circleSuperFast(58, false, true, 0);
+				break;
+			case 5:
+				status = wheels.forwardFullSpeed(8.2, 58, 1.5);//7.25
+				break;
+			case 6:
+				status = wheels.circleSuperFast(-165, false, true, 0);//-169.9
+				break;
+			case 7:
+				status = wheels.forward(18.6, -170, -1.0); //169.9 yes they're opposite
 				break;
 			default:
 				firstTime = true;

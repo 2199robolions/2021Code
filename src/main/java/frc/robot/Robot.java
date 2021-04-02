@@ -217,7 +217,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			autoStatus = auto.autoBarrelSuperSpeed();
+			autoStatus = auto.autoSlalomSuperDuperSpeed();
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
@@ -300,6 +300,7 @@ public class Robot extends TimedRobot {
 		System.out.println("Start test mode...");
 		System.out.println("record time...");
 		autoStatus = Robot.CONT;
+		startTime = System.nanoTime();  
 	}
 
 	/**
@@ -331,7 +332,10 @@ public class Robot extends TimedRobot {
 		conveyer.manualVerticalControl(controller.getVerticalBeltState());   
 		conveyer.manualHorizontalControl(controller.getHorizonalBeltState());   
 		*/
-		System.out.println("yaw: " + wheels.getYaw());
+		if(autoStatus == CONT){
+			autoStatus = wheels.circleSuperFast(0, true, true, 1);
+			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
+		}
 
 
 	}

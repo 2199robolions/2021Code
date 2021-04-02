@@ -455,6 +455,11 @@ public class Wheels {
 		CIRCLE_POWER = -0.9;
 		CIRCLE_ROTATION = -0.76;
 		return circle(exitAngle, clockwise, forwardDirection, passes);
+	}
+	public int circleSuperFast(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
+		CIRCLE_POWER = -1.0;
+		CIRCLE_ROTATION = -0.95;
+		return circle(exitAngle, clockwise, forwardDirection, passes);
     }
 
 	public int circle(double exitAngle, boolean clockwise, boolean forwardDirection, int passes)   {
