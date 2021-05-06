@@ -60,31 +60,41 @@ public class Robot extends TimedRobot {
 	 * Auto Choices
 	 */
 	//Position
-	private static final String kDefaultAuto      = "Default";
-	private static final String kCustomAutoRight  = "Right";
-	private static final String kCustomAutoCenter = "Center";
-	private static final String kCustomAutoLeft   = "Left";
-	private static final String kCustomAutoLRC    = "L/R/C Simple";
+	private final String kDefaultAuto      = "Default";
+	private final String kCustomAutoRight  = "Right";
+	private final String kCustomAutoCenter = "Center";
+	private final String kCustomAutoLeft   = "Left";
+	private final String kCustomAutoLRC    = "L/R/C Simple";
 
 	private String m_positionSelected;
 	private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	//Delay
-	private static final String kDefaultTime    = "0";
-	private static final String kCustomChooser2 = "2";
-	private static final String kCustomChooser4 = "4";
-	private static final String kCustomChooser6 = "6";
+	private final String kDefaultTime    = "0";
+	private final String kCustomChooser2 = "2";
+	private final String kCustomChooser4 = "4";
+	private final String kCustomChooser6 = "6";
 
 	private String m_delaySelected;
 	private final SendableChooser<String> m_delayChooser = new SendableChooser<>();
 
 	// Alliance Color
-	private static final String kDefaultColor   = "Default";
-	private static final String kBlue           = "Blue";
-	private static final String kRed            = "Red";
+	private final String kDefaultColor   = "Default";
+	private final String kBlue           = "Blue";
+	private final String kRed            = "Red";
 
 	private String alliance;
 	private final SendableChooser<String> allianceColor = new SendableChooser<>();
+
+	//Galactic Search Path
+	public static String kDefaultGalacticPath = "Unknown";
+	public static String kA_BLUE              = "A Blue";
+	public static String kB_BLUE              = "B Blue";
+	public static String kA_RED               = "A Red" ;
+	public static String kB_RED               = "B Red" ;
+	
+	private String galacticSearchPath;
+	private final SendableChooser<String> galacticSearchChoice = new SendableChooser<>();
 
 	//Enumeration of galactic search paths
 	private static enum GalacticPath {
@@ -148,7 +158,7 @@ public class Robot extends TimedRobot {
 		m_delayChooser.setDefaultOption(kDefaultTime, kDefaultTime);
 		SmartDashboard.putData("Auto delay", m_delayChooser);
 
-		//Color Options
+		//Alliance Color Options
 		allianceColor.addOption(kDefaultColor, kDefaultColor);
 		allianceColor.addOption(kBlue, kBlue);
 		allianceColor.addOption(kRed, kRed);
@@ -158,6 +168,21 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Alliance Color", allianceColor);
 		
 		alliance = allianceColor.getSelected();
+		
+
+		//Galactice Search Path Options (May 20th Demo ONLY)
+		galacticSearchChoice.addOption(kDefaultGalacticPath, kDefaultGalacticPath);
+		galacticSearchChoice.addOption(kA_BLUE, kA_BLUE);
+		galacticSearchChoice.addOption(kB_BLUE, kB_BLUE);
+		galacticSearchChoice.addOption(kA_RED , kA_RED );
+		galacticSearchChoice.addOption(kB_RED , kB_RED );
+
+		//Galactice Search Path Select (May 20th Demo ONLY)
+		galacticSearchChoice.setDefaultOption(kDefaultGalacticPath, kDefaultGalacticPath);;
+		SmartDashboard.putData("Galactic Path ", galacticSearchChoice);
+
+		galacticSearchPath = galacticSearchChoice.getSelected();
+
 
 		//Set Limelight to On
 		wheels.changeLimelightLED(Wheels.LIMELIGHT_ON);
@@ -217,7 +242,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			autoStatus = auto.autoSlalomSuperDuperSpeed();
+			//autoStatus = auto.autoSlalomSuperDuperSpeed();
+			autoStatus = auto.may20thDemo(galacticSearchPath);
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){

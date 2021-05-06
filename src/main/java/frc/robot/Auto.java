@@ -11,12 +11,13 @@ import frc.robot.Conveyer.ConveyerState;
 import frc.robot.Grabber.GrabberDirection;
 
 public class Auto {
-	private LedLights  led;
-	private int        step;
-	private long       startMs; 
-	private boolean    firstTime = true;
+	//Variables
+	private int          step;
+	private long         startMs; 
+	private boolean      firstTime = true;
 
 	// Object creation
+	private LedLights   led;
 	private Wheels      wheels;
 	private Shooter     shooter;
 	private Conveyer    conveyer;
@@ -300,6 +301,46 @@ public class Auto {
 		return Robot.CONT;
 	}
 
+	/**
+	 * 
+	 * @
+	 */
+	public int may20thDemo(String galacticSearchPath) {
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step){
+			case 1:
+				if (galacticSearchPath == Robot.kA_BLUE) {
+					status = autoGalacticSearchABlue();
+				}
+				else if (galacticSearchPath == Robot.kB_BLUE) {
+					status = autoGalacticSearchBBlue();
+				}
+				else if (galacticSearchPath == Robot.kA_RED) {
+					status = autoGalacticSearchARed();
+				}
+				else if (galacticSearchPath == Robot.kB_RED) {
+					status = autoGalacticSearchBRed();
+				}
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+		
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step ++;
+			System.out.println("Entering step: " + step);
+		}
+
+		return Robot.CONT;
+	}
 
 
 
