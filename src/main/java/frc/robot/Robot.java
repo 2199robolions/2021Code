@@ -60,38 +60,38 @@ public class Robot extends TimedRobot {
 	 * Auto Choices
 	 */
 	//Position
-	private final String kDefaultAuto      = "Default";
-	private final String kCustomAutoRight  = "Right";
-	private final String kCustomAutoCenter = "Center";
-	private final String kCustomAutoLeft   = "Left";
-	private final String kCustomAutoLRC    = "L/R/C Simple";
+	private static final String kDefaultAuto      = "Default";
+	private static final String kCustomAutoRight  = "Right";
+	private static final String kCustomAutoCenter = "Center";
+	private static final String kCustomAutoLeft   = "Left";
+	private static final String kCustomAutoLRC    = "L/R/C Simple";
 
 	private String m_positionSelected;
 	private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	//Delay
-	private final String kDefaultTime    = "0";
-	private final String kCustomChooser2 = "2";
-	private final String kCustomChooser4 = "4";
-	private final String kCustomChooser6 = "6";
+	private static final String kDefaultTime    = "0";
+	private static final String kCustomChooser2 = "2";
+	private static final String kCustomChooser4 = "4";
+	private static final String kCustomChooser6 = "6";
 
 	private String m_delaySelected;
 	private final SendableChooser<String> m_delayChooser = new SendableChooser<>();
 
 	// Alliance Color
-	private final String kDefaultColor   = "Default";
-	private final String kBlue           = "Blue";
-	private final String kRed            = "Red";
+	private static final String kDefaultColor   = "Default";
+	private static final String kBlue           = "Blue";
+	private static final String kRed            = "Red";
 
 	private String alliance;
 	private final SendableChooser<String> allianceColor = new SendableChooser<>();
 
 	//Galactic Search Path
-	public static String kDefaultGalacticPath = "Unknown";
-	public static String kA_BLUE              = "A Blue";
-	public static String kB_BLUE              = "B Blue";
-	public static String kA_RED               = "A Red" ;
-	public static String kB_RED               = "B Red" ;
+	public static final String kDefaultGalacticPath = "Unknown";
+	public static final String kA_BLUE              = "A Blue";
+	public static final String kB_BLUE              = "B Blue";
+	public static final String kA_RED               = "A Red" ;
+	public static final String kB_RED               = "B Red" ;
 	
 	private String galacticSearchPath;
 	private final SendableChooser<String> galacticSearchChoice = new SendableChooser<>();
@@ -387,8 +387,8 @@ public class Robot extends TimedRobot {
 		// All arms down
 		if (climberState == Climber.ClimberState.ALL_ARMS_DOWN) {
 			if (allArmsUp == true) {
-					climberStatus = auto.climberDeploy(climber);
-					climberState = Climber.ClimberState.START_ARMS_UP;
+				climberStatus = auto.climberDeploy(climber);
+				climberState = Climber.ClimberState.START_ARMS_UP;
 			}
 		}
 		// ready to deploy cliber arms

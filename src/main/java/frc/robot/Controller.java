@@ -112,7 +112,7 @@ public class Controller {
         }
         else {
             return 0;
-         }
+        }
     }
 
     // Upper left, Up, and Upper right on the DPad returns forward
