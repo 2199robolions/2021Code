@@ -27,7 +27,7 @@ and then using the period of the oscillation to calculate I and D.
 
     Start by setting I and D to 0.
 	Increase P until the system starts oscillating for a period of Tu. You want the oscillation
-	 to be large enough that you can time it. This maximum P will be referred to as Ku.
+	to be large enough that you can time it. This maximum P will be referred to as Ku.
     Use the chart below to calculate different P, I, and D values.
 
 Control Types 	P 	I 	D
@@ -68,7 +68,7 @@ public class Wheels {
 	//Variables
 	double rightWheelAverage;
 	double leftWheelAverage;
-	int noTargetCount = 0;
+	int    noTargetCount = 0;
 
 	//ENCODERS
 	private CANEncoder encoderLeft_1;
@@ -89,8 +89,8 @@ public class Wheels {
 
 	//
 	private boolean firstTime = true;
-	private int count = 0;
-	private double encoderTarget;
+	private int     count = 0;
+	private double  encoderTarget;
 
 	//Limelight Variables
 	private boolean limeLightFirstTime = true;
@@ -98,12 +98,12 @@ public class Wheels {
 	private static final int ON_ANGLE_COUNT = 10;
 
 	//Limelight
-	private double m_LimelightCalculatedDistPrev = 0;
-	public boolean limeControl = false;
-	public int limeStatus = 0;
-	public static final int LIMELIGHT_ON  = 0;
-	public static final int LIMELIGHT_OFF = 1;
-	private long timeOut;
+	private             double  m_LimelightCalculatedDistPrev = 0;
+	public              boolean limeControl                   = false;
+	public              int     limeStatus                    = 0;
+	public static final int     LIMELIGHT_ON                  = 0;
+	public static final int     LIMELIGHT_OFF                 = 1;
+	private             long    timeOut;
 
 	// Turn Controller
 	//private static final double kP = 0.05;
@@ -228,7 +228,7 @@ public class Wheels {
 		
 		/* Max/Min input values.  Inputs are continuous/circle */
 		turnController.enableContinuousInput(-180.0, 180.0);
-		//targetController.enableContinuousInput(-27.0, 27.0);
+		//targetController.enableContinuousInput(-30.0, 30.0);
 
 		/* Max/Min output values */
 		//Turn Controller

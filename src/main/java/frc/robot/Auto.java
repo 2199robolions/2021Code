@@ -302,8 +302,9 @@ public class Auto {
 	}
 
 	/**
-	 * 
-	 * @
+	 * The auto program that we will be using for the May 20th Demo
+	 * @param galacticSearchPath
+	 * @return Robot Status
 	 */
 	public int may20thDemo(String galacticSearchPath) {
 

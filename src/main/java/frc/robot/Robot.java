@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 	private int     autoStatus      = Robot.CONT; 
 	private long    startTime       = 0;
 	private long    endTime         = 0;
-	private boolean climbEnabled = false;
+	private boolean climbEnabled    = false;
 	private boolean climberRetract  = false;
 	private boolean enableTopPiston = false;
 	private Climber.ClimberState climberState = Climber.ClimberState.ALL_ARMS_DOWN;
@@ -169,7 +169,6 @@ public class Robot extends TimedRobot {
 		
 		alliance = allianceColor.getSelected();
 		
-
 		//Galactice Search Path Options (May 20th Demo ONLY)
 		galacticSearchChoice.addOption(kDefaultGalacticPath, kDefaultGalacticPath);
 		galacticSearchChoice.addOption(kA_BLUE, kA_BLUE);
@@ -180,9 +179,6 @@ public class Robot extends TimedRobot {
 		//Galactice Search Path Select (May 20th Demo ONLY)
 		galacticSearchChoice.setDefaultOption(kDefaultGalacticPath, kDefaultGalacticPath);;
 		SmartDashboard.putData("Galactic Path ", galacticSearchChoice);
-
-		galacticSearchPath = galacticSearchChoice.getSelected();
-
 
 		//Set Limelight to On
 		wheels.changeLimelightLED(Wheels.LIMELIGHT_ON);
@@ -198,6 +194,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		//
 	}
 
 	/**
@@ -213,6 +210,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		galacticSearchPath  = galacticSearchChoice.getSelected();
 		m_positionSelected  = m_chooser.getSelected();
 		m_delaySelected     = m_delayChooser.getSelected();
 		delaySeconds        = Integer.parseInt(m_delaySelected);
@@ -447,7 +445,7 @@ public class Robot extends TimedRobot {
 		//Manual Drive
 		if ( wheelMode == Wheels.WheelMode.MANUAL ) {
 			wheels.controllerDrive(controller.getForwardPower(),
-														 controller.getClockwiseRotation());
+								   controller.getClockwiseRotation());
 
 			ledCurrent++;
 	
