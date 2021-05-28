@@ -78,7 +78,7 @@ public class Controller {
 
     // X Deploys Color Sensor
     public boolean colorDeployRetract() {
-        return xbox.getXButtonPressed();
+        return false;
     }
 
     // Y Deploys / Retracts Grabber
@@ -88,12 +88,14 @@ public class Controller {
 
     // Right Bumper Pressed
     public boolean climberAllArmsUp() {
-        return xbox.getBumper(Hand.kRight);
+        return false;
+        //return xbox.getBumper(Hand.kRight);
     }
 
     // Left Bumper Pressed
     public boolean climberTopArmDown() {
-        return xbox.getBumper(Hand.kLeft);
+        return false;
+        //return xbox.getBumper(Hand.kLeft);
     }
 
     // Left Trigger

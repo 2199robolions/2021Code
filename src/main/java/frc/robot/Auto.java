@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.Conveyer.ConveyerState;
 import frc.robot.Grabber.GrabberDirection;
+//import jdk.nashorn.internal.ir.BreakableNode;
 
 public class Auto {
 	//Variables
@@ -306,7 +307,7 @@ public class Auto {
 	 * @param galacticSearchPath
 	 * @return Robot Status
 	 */
-	public int may20thDemo(String galacticSearchPath) {
+	public int may20thDemo() {
 
 		if (firstTime == true) {
 			step = 1;
@@ -317,19 +318,30 @@ public class Auto {
 
 		switch(step){
 			case 1:
-				if (galacticSearchPath == Robot.kA_BLUE) {
-					status = autoGalacticSearchABlue();
-				}
-				else if (galacticSearchPath == Robot.kB_BLUE) {
-					status = autoGalacticSearchBBlue();
-				}
-				else if (galacticSearchPath == Robot.kA_RED) {
-					status = autoGalacticSearchARed();
-				}
-				else if (galacticSearchPath == Robot.kB_RED) {
-					status = autoGalacticSearchBRed();
-				}
+				grabber.deployRetract();
+				grabber.grabberDirection(GrabberDirection.FORWARD);
+				status = Robot.DONE;
 				break;
+			case 2:
+				status = wheels.forward(5, -5);
+				break;
+			case 3:
+				conveyer.autoHorizontalControl();
+				status = wheels.circleMedium(180, false, true, 0);
+				break;
+		/*	case 3:
+				status = wheels.forward(5, 180);
+				break;
+			case 4:
+				conveyer.autoHorizontalControl();
+				status = wheels.circle(-50, true, true, 0);
+				break;
+			case 5:
+				conveyer.autoHorizontalControl();
+				status = wheels.forward(7, -50);
+				break;*/
+
+
 			default:
 				firstTime = true;
 				return Robot.DONE;

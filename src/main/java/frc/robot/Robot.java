@@ -241,7 +241,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
 			//autoStatus = auto.autoSlalomSuperDuperSpeed();
-			autoStatus = auto.may20thDemo(galacticSearchPath);
+			autoStatus = auto.may20thDemo();
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
