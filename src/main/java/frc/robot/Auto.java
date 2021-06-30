@@ -1315,6 +1315,300 @@ public class Auto {
 				led.autoModeFinished();
 
 				return Robot.DONE;
+			}
+
+			if ((status == Robot.DONE)   || (status == Robot.FAIL)) {
+				step = step + 1;
+			}
+
+			return Robot.CONT;
+		}
+
+// 2021 versions of the autonomous routes
+
+	/**
+	 * Left Auto:
+	 * center of robot 13ft 5.75 in from left wall, or left bumper 146.25 in (13' 5.75") from left wall
+	 */
+	public int leftAuto2021( int delay ) {
+		int status = Robot.CONT;
+		long currentMs = System.currentTimeMillis();
+		long delayMs = delay * 1000;
+
+		switch(step) {
+			// Starts Auto Program
+			case 1:
+				// setup
+				led.autoMode();
+				status = delay(delayMs);
+				break;
+			case 2:
+				// Rotate -5 degress to Assist Limelight
+			 	// status = wheels.rotate( rotation ); (commented line of code assumed to have not worked)
+				status = Robot.DONE;
+				break;
+			case 3:
+				// use the limelight to point towards the target with the distance set as 10'
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				break;
+			case 4:
+				// set the startMs to system time to help shooting timing
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 5:
+				// Start Conveyer and Shooter
+				shooter.manualShooterControl( Shooter.ShootLocation.TEN_FOOT );
+
+				if (shooter.shooterReady() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				// Allow time for the shooter to Shoot
+				if ((currentMs - startMs) > SHOOT_TIME ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 6:
+				// turn off all shooting mechanisms
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
+			case 7:
+				// move forward 3 feet
+				status = wheels.forward( -3.0 , 0.0 );
+				break;
+			case 8:
+				// turn around 180 degrees
+				status = wheels.rotate(-180.0);
+				break;
+			case 9:
+				// toggle the grabber state (most likely putting down the grabber)
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			default:
+				// Everything Off
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+
+				// Set Step to 1
+				step = 1;
+
+				// Auto Program Finished
+				led.autoModeFinished();
+
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE)   || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+
+
+   /**
+	 * Center Auto:
+	 * right in front of the target
+	 */
+	public int centerAuto2021( int delay ) {
+		int status = Robot.CONT;
+		long currentMs = System.currentTimeMillis();
+		long delayMs = delay * 1000;
+
+		switch(step) {
+			// Starts Auto Program
+			case 1:
+				// setup
+				led.autoMode();
+				status = delay(delayMs);
+				break;
+			case 2:
+				// Rotate -5 degress to Assist Limelight
+			   // status = wheels.rotate( rotation );
+				status = Robot.DONE;
+				break;
+			case 3:
+				// use the limelight to point towards the target with the distance set as 10'
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				break;
+			case 4:
+				// set the startMs to system time to help shooting timing
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 5:
+				status = Robot.CONT;
+
+				// Start Conveyer and Shooter
+				shooter.manualShooterControl( Shooter.ShootLocation.TEN_FOOT );
+
+				if (shooter.shooterReady() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				// Allow time for the shooter to Shoot
+				if ( (currentMs - startMs) > SHOOT_TIME ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 6:
+				// turn off all shooting mechanisms
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				// Back Up 5 Feet
+				status = wheels.forward( -2.0 , 0.0 );
+				break;
+			case 7:
+				// turn 90 degrees left
+				status = wheels.rotate(-90.0);
+				break;
+			case 8:
+				// move forward 6' with a heading of -90
+				status = wheels.forward(-6.0, -90.0);
+				break;
+			case 9:
+				// turn around 180 degrees
+				status = wheels.rotate(-180.0);
+				break;
+			case 10:
+				// toggle grabber down
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			default:
+				// Everything Off
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+
+				// Set Step to 1
+				step = 1;
+
+				// Auto Program Finished
+				led.autoModeFinished();
+
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE)   || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+
+
+	/**
+	 * Right bumper is 2ft. from wall
+	 */
+	public int rightAuto2021( int delay ) {
+		int status = Robot.CONT;
+		long currentMs = System.currentTimeMillis();
+		long delayMs = delay * 1000;
+
+		switch(step) {
+			// Starts Auto Program
+			case 1:
+				// setup
+				led.autoMode();
+				status = delay(delayMs);
+				break;
+			case 2:
+				// Rotate -5 degress to Assist Limelight
+			 //   status = wheels.rotate( rotation );
+				status = Robot.DONE;
+				break;
+			case 3:
+				// use the limelight to point towards the target with the distance set as 10'				
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				break;
+			case 4:
+				// set the startMs to system time to help shooting timing
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 5:
+				// Start Conveyer and Shooter
+				shooter.manualShooterControl( Shooter.ShootLocation.TEN_FOOT );
+
+				if (shooter.shooterReady() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				if ((currentMs - startMs) > SHOOT_TIME ) {
+					// Allow time for the shooter to Shoot
+					status = Robot.DONE;
+				}
+				break;
+			case 6:
+				// turn off shooting mechanisms
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
+			case 7:
+				// turn 45 degrees left
+				status = wheels.rotate(-45.0);
+				break;
+			case 8:
+				// Back Up 1'
+				status = wheels.forward( -1.0 , -45.0 );
+				break;
+			case 9:
+				// turn around 180 degrees
+				status = wheels.rotate(-180.0);
+				break;
+			case 10:
+				// toggle grabber down
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 11:
+				// move 3' forward with a heading of -180
+				status = wheels.forward(3.0, -180.0);
+				break;
+			default:
+				// Everything Off
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				shooter.manualShooterControl( Shooter.ShootLocation.OFF );
+
+				// Set Step to 1
+				step = 1;
+
+				// Auto Program Finished
+				led.autoModeFinished();
+
+				return Robot.DONE;
 		}
 
 		if ((status == Robot.DONE)   || (status == Robot.FAIL)) {
@@ -1863,7 +2157,5 @@ public int rightAutoOld(int delay) {
 
 		return Robot.CONT;
 	}
-
-
 
 } // End of Auto class

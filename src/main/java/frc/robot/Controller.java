@@ -88,14 +88,12 @@ public class Controller {
 
     // Right Bumper Pressed
     public boolean climberAllArmsUp() {
-        return false;
-        //return xbox.getBumper(Hand.kRight);
+        return xbox.getBumper(Hand.kRight);
     }
 
     // Left Bumper Pressed
     public boolean climberTopArmDown() {
-        return false;
-        //return xbox.getBumper(Hand.kLeft);
+        return xbox.getBumper(Hand.kLeft);
     }
 
     // Left Trigger
