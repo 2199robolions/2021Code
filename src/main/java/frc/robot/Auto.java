@@ -15,7 +15,8 @@ public class Auto {
 	//Variables
 	private int          step;
 	private long         startMs; 
-	private boolean      firstTime = true;
+	private boolean      firstTime      = true;
+	private boolean      delayFirstTime = true;
 
 	// Object creation
 	private LedLights   led;
@@ -43,6 +44,33 @@ public class Auto {
 		step = 1;
 	}
 
+	/**
+	 * For the 2021 offseason game
+	 */
+	public int autoSimple( int delaySec){
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				status = delay(delaySec * 1000);
+				break;
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
 
 	/** 
 	 * For the 2021 AutoNav Challenge: Uses a different rotate function than the previous autoNav() function (see above), revolving around a point outside of the robot body.
@@ -1913,13 +1941,13 @@ public class Auto {
 	private int delay(long delayMsec) {
 		long currentMs = System.currentTimeMillis();
 
-		if (firstTime == true) {
-			firstTime = false;
+		if (delayFirstTime == true) {
+			delayFirstTime = false;
 			startMs = System.currentTimeMillis();
 		}
 
 		if ( (currentMs - startMs) > delayMsec) {
-			firstTime = true;
+			delayFirstTime = true;
 			return Robot.DONE;
 		}
 		else  {

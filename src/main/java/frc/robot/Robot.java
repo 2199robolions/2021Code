@@ -86,26 +86,9 @@ public class Robot extends TimedRobot {
 	private String alliance;
 	private final SendableChooser<String> allianceColor = new SendableChooser<>();
 
-	//Galactic Search Path
-	public static final String kDefaultGalacticPath = "Unknown";
-	public static final String kA_BLUE              = "A Blue";
-	public static final String kB_BLUE              = "B Blue";
-	public static final String kA_RED               = "A Red" ;
-	public static final String kB_RED               = "B Red" ;
-	
-	private String galacticSearchPath;
-	private final SendableChooser<String> galacticSearchChoice = new SendableChooser<>();
 
 	//Enumeration of galactic search paths
-	private static enum GalacticPath {
-		A_RED,
-		A_BLUE,
-		B_RED,
-		B_BLUE,
-		UNKNOWN_PATH;
-	}
-	private GalacticPath galacticPath = GalacticPath.UNKNOWN_PATH;
-
+	
 	/** 
 	 * Constructor
 	 */
@@ -167,18 +150,7 @@ public class Robot extends TimedRobot {
 		allianceColor.setDefaultOption(kDefaultColor, kDefaultColor);
 		SmartDashboard.putData("Alliance Color", allianceColor);
 		
-		alliance = allianceColor.getSelected();
-		
-		//Galactice Search Path Options (May 20th Demo ONLY)
-		galacticSearchChoice.addOption(kDefaultGalacticPath, kDefaultGalacticPath);
-		galacticSearchChoice.addOption(kA_BLUE, kA_BLUE);
-		galacticSearchChoice.addOption(kB_BLUE, kB_BLUE);
-		galacticSearchChoice.addOption(kA_RED , kA_RED );
-		galacticSearchChoice.addOption(kB_RED , kB_RED );
-
-		//Galactice Search Path Select (May 20th Demo ONLY)
-		galacticSearchChoice.setDefaultOption(kDefaultGalacticPath, kDefaultGalacticPath);;
-		SmartDashboard.putData("Galactic Path ", galacticSearchChoice);
+		alliance = allianceColor.getSelected();	
 
 		//Set Limelight to On
 		wheels.changeLimelightLED(Wheels.LIMELIGHT_ON);
@@ -210,7 +182,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		galacticSearchPath  = galacticSearchChoice.getSelected();
 		m_positionSelected  = m_chooser.getSelected();
 		m_delaySelected     = m_delayChooser.getSelected();
 		delaySeconds        = Integer.parseInt(m_delaySelected);
@@ -218,6 +189,10 @@ public class Robot extends TimedRobot {
 		startTime           = System.nanoTime();  
 		double yaw			= wheels.getYaw();
 
+		System.out.println("Delay: "    + delaySeconds);
+		System.out.println("Position: " + m_positionSelected);
+
+		/*
 		if((yaw > 33) && (yaw < 42)){
 			galacticPath = GalacticPath.A_RED;
 			SmartDashboard.putString("Path", "A_RED");
@@ -230,7 +205,7 @@ public class Robot extends TimedRobot {
 		} else if ((yaw < -12) && (yaw > -26)){
 			galacticPath = GalacticPath.B_BLUE;
 			SmartDashboard.putString("Path", "B_BLUE");	
-		}
+		}*/
 
 	}
 
@@ -240,13 +215,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		if (autoStatus == Robot.CONT) {
-			//autoStatus = auto.autoSlalomSuperDuperSpeed();
-			autoStatus = auto.may20thDemo();
+			if (m_positionSelected.equals("L/R/C Simple") == true) {
+				autoStatus = auto.autoSimple( delaySeconds);
+			}
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
-			System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));	
+			//System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));	
 		}
 	}
 
