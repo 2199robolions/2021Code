@@ -68,16 +68,16 @@ public class Shooter {
 
 	// CONSTANTS
 	public final double OFF_POWER       = 0.00;
-	public final double TEN_FOOT_POWER  = 0.622; //0.66
+	public final double TEN_FOOT_POWER  = 0.81; //0.66
 	public final double TRENCH_POWER    = 0.52; //.648 //.645
 	public final double HAIL_MARY_POWER = 1.00;
 
 	public final double MAX_TARGET_RPM       = 5300; 
 	public final double OFF_TARGET_RPM       = 0;
-	private final double ERROR_TARGET_RPM    = 50.0;
-	public final double TEN_FOOT_TARGET_RPM  = 3572; //3720
+	private final double ERROR_TARGET_RPM    = 150.0;
+	public final double TEN_FOOT_TARGET_RPM  = 4500; //3720
 	public final double TRENCH_TARGET_RPM    = 2940; //3662
-	public final double HAIL_MARY_TARGET_RPM = 5325; //5375
+	public final double HAIL_MARY_TARGET_RPM = 4960; //5375
 
 	
 	public double targetVelocity; //was private
