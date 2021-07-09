@@ -27,7 +27,7 @@ public class Auto {
 	private ColorWheel  colorWheel;
 
 	private final int TEST_DELAY = 1000;
-	private final int SHOOT_TIME = 10000;
+	private final int SHOOT_TIME = 5000;
 
 
 	/**
@@ -105,6 +105,76 @@ public class Auto {
 				break;
 
 			*/
+			default:
+				firstTime = true;
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+
+	public int autoRightFull( int delaySec){
+		long currentMs;
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		int status = Robot.CONT;
+
+		switch(step) {
+			case 1:
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = delay(delaySec * 1000);
+				break;
+			case 3:
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				break;
+			case 4:
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 5:
+				// Start Conveyer and Shooter
+				shooter.autoShooterControl( Shooter.ShootLocation.TEN_FOOT );
+
+				if (shooter.shooterReadyAuto() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				// Allow time for the shooter to Shoot
+				currentMs = System.currentTimeMillis();
+				if ((currentMs - startMs) > SHOOT_TIME ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 6:
+				shooter.autoShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
+			case 7:
+				status = wheels.rotate(-180);
+				break;
+			case 8:
+				status = wheels.circleMedium(135, false, true, 0);
+				break;
 			default:
 				firstTime = true;
 				return Robot.DONE;
