@@ -119,21 +119,22 @@ public class Auto {
 
 	public int autoRightFull( int delaySec){
 		long currentMs;
+		long delayMsec = delaySec * 1000;
+
+		int status = Robot.CONT;
 
 		if (firstTime == true) {
 			step = 1;
 			firstTime = false;
 		}
 
-		int status = Robot.CONT;
-
 		switch(step) {
 			case 1:
-				grabber.deployRetract();
+				//grabber.deployRetract();
 				status = Robot.DONE;
 				break;
 			case 2:
-				status = delay(delaySec * 1000);
+				status = delay(delayMsec);
 				break;
 			case 3:
 				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
@@ -170,13 +171,43 @@ public class Auto {
 				status = Robot.DONE;
 				break;
 			case 7:
-				status = wheels.rotate(-180);
+				status = wheels.forward(-2, -25);
 				break;
 			case 8:
-				status = wheels.circleMedium(135, false, true, 0);
+				status = wheels.rotate(180);
+				break;
+			case 9:
+				grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 10:
+				grabber.grabberDirection(Grabber.GrabberDirection.FORWARD);
+				status = Robot.DONE;
+				break;
+			case 11:
+				conveyer.autoHorizontalControl();
+				status = wheels.forward(12, 180);
+				break;
+			case 12:
+				conveyer.autoHorizontalControl();
+				
+				//status = delay(2000);
+				status = Robot.DONE;
+				break;
+			case 13:
+				conveyer.autoHorizontalControl();
+				status = wheels.forwardFullSpeed(-3.5, 180, 1);
+				break;
+			case 14:
+				status = wheels.rotate(-15);
 				break;
 			default:
 				firstTime = true;
+
+				grabber. grabberDirection(Grabber.GrabberDirection.OFF);
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(Conveyer.ConveyerState.OFF);
+
 				return Robot.DONE;
 		}
 
@@ -1380,7 +1411,7 @@ public class Auto {
 	 * Right bumper is 2ft. from wall
 	 */
 	public int rightAuto( int delay ) {
-		int status = Robot.CONT;
+		int  status = Robot.CONT;
 		long currentMs = System.currentTimeMillis();
 		long delayMs = delay * 1000;
 

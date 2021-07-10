@@ -217,10 +217,10 @@ public class Robot extends TimedRobot {
 		if (autoStatus == Robot.CONT) {
 			if (m_positionSelected.equals(kCustomAutoLRC) == true) {
 				autoStatus = auto.autoSimple(delaySeconds);
-				System.out.println("Running simple auto");
+				//System.out.println("Running simple auto");
 			} else if (m_positionSelected.equals(kCustomAutoRight) == true){
 				autoStatus = auto.autoRightFull(delaySeconds);
-				System.out.println("Running right auto");
+				//System.out.println("Running right auto");
 			}
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			

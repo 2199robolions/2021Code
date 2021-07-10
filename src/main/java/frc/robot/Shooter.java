@@ -155,7 +155,7 @@ public class Shooter {
 		}
 
 		power = MathUtil.clamp(targetPower + powerError, 0.0, 1.0);
-		System.out.println("power:" + power + " rpm:" + encoder_Shooter_1.getVelocity());
+		//System.out.println("power:" + power + " rpm:" + encoder_Shooter_1.getVelocity());
 		SmartDashboard.putNumber("power", power);
 		SmartDashboard.putNumber("rpm", encoder_Shooter_1.getVelocity());
 
@@ -196,7 +196,7 @@ public class Shooter {
 		double rpm;
 
 		rpm = encoder_Shooter_1.getVelocity();
-		System.out.println("RPM: " + rpm);
+		//System.out.println("RPM: " + rpm);
 		if ( (rpm > (targetVelocity - ERROR_TARGET_RPM)) &&
 			 (rpm < (targetVelocity + ERROR_TARGET_RPM)) )  {
 			targetCount ++;
