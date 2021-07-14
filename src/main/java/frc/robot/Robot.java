@@ -221,6 +221,8 @@ public class Robot extends TimedRobot {
 			} else if (m_positionSelected.equals(kCustomAutoRight) == true){
 				autoStatus = auto.autoRightFull(delaySeconds);
 				//System.out.println("Running right auto");
+			} else if (m_positionSelected.equals(kCustomAutoCenter) == true){
+				autoStatus = auto.autoCenterFull(delaySeconds);
 			}
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			

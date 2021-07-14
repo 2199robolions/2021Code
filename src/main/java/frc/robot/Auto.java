@@ -99,12 +99,9 @@ public class Auto {
 				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
 				status = Robot.DONE;
 				break;
-			/*
-			case 3:
-				shooter.autoShooterControl(Shooter.ShootLocation.TEN_FOOT);
+			case 7:
+				status = wheels.forward(-3, 0);
 				break;
-
-			*/
 			default:
 				firstTime = true;
 				return Robot.DONE;
@@ -201,6 +198,7 @@ public class Auto {
 			case 14:
 				status = wheels.rotate(-15);
 				break;
+			//Add targetting and shooting
 			default:
 				firstTime = true;
 
@@ -217,6 +215,80 @@ public class Auto {
 
 		return Robot.CONT;
 	}
+
+	public int autoCenterFull( int delaySec){
+		long currentMs;
+		long delayMsec = delaySec * 1000;
+
+		int status = Robot.CONT;
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		switch(step) {
+			case 1:
+				//grabber.deployRetract();
+				status = Robot.DONE;
+				break;
+			case 2:
+				status = delay(delayMsec);
+				break;
+			case 3:
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				break;
+			case 4:
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 5:
+				// Start Conveyer and Shooter
+				shooter.autoShooterControl( Shooter.ShootLocation.TEN_FOOT );
+
+				if (shooter.shooterReadyAuto() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				// Allow time for the shooter to Shoot
+				currentMs = System.currentTimeMillis();
+				if ((currentMs - startMs) > SHOOT_TIME ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 6:
+				shooter.autoShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
+			case 7:
+				status = wheels.forward(-3, 0);
+				break;
+			default:
+				firstTime = true;
+
+				grabber. grabberDirection(Grabber.GrabberDirection.OFF);
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(Conveyer.ConveyerState.OFF);
+
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+
 
 	/** 
 	 * For the 2021 AutoNav Challenge: Uses a different rotate function than the previous autoNav() function (see above), revolving around a point outside of the robot body.
