@@ -149,6 +149,9 @@ public class Robot extends TimedRobot {
 		//Alliance Select
 		allianceColor.setDefaultOption(kDefaultColor, kDefaultColor);
 		SmartDashboard.putData("Alliance Color", allianceColor);
+
+		//Testing shooter powers
+		SmartDashboard.putNumber("Input Power", 0.75);
 		
 		alliance = allianceColor.getSelected();	
 
@@ -303,7 +306,6 @@ public class Robot extends TimedRobot {
 
 	public void testInit()  {
 		// Placeholder
-		SmartDashboard.putNumber("Input Power", 0.25);
 		System.out.println("Start test mode...");
 		System.out.println("record time...");
 		autoStatus = Robot.CONT;
