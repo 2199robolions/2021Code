@@ -337,18 +337,22 @@ public class Robot extends TimedRobot {
 		System.out.println("Power: " + tempPower);	
 		conveyer.manualVerticalControl(controller.getVerticalBeltState());   
 		conveyer.manualHorizontalControl(controller.getHorizonalBeltState());   
-		
-		if(autoStatus == CONT){
-			autoStatus = wheels.circleSuperFast(0, true, true, 1);
-			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
-		}
 		*/
+
+		if (autoStatus == CONT) {
+			autoStatus = wheels.rotate(180);
+			//SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
+		} else if (autoStatus == DONE) {
+			System.out.println("Done: " + (System.nanoTime() - startTime));
+		}
+		
+		/*
 		double tempPower = 0.65;
 		tempPower = SmartDashboard.getNumber("Input Power", 0.5);
 		shooter.testShoooter(tempPower);
 		conveyer.manualVerticalControl(Conveyer.ConveyerState.FORWARD);   
 		conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);   
-
+		*/
 
 
 	}

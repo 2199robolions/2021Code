@@ -27,7 +27,7 @@ public class Auto {
 	private ColorWheel  colorWheel;
 
 	private final int TEST_DELAY = 1000;
-	private final int SHOOT_TIME = 5000;
+	private final int SHOOT_TIME = 4000;
 
 
 	/**
@@ -134,7 +134,8 @@ public class Auto {
 				status = delay(delayMsec);
 				break;
 			case 3:
-				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				//status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				status = Robot.DONE;
 				break;
 			case 4:
 				startMs = System.currentTimeMillis();
@@ -183,7 +184,7 @@ public class Auto {
 				break;
 			case 11:
 				conveyer.autoHorizontalControl();
-				status = wheels.forward(12, 180);
+				status = wheels.forward(12, 180, 0.9);
 				break;
 			case 12:
 				conveyer.autoHorizontalControl();
@@ -198,7 +199,43 @@ public class Auto {
 			case 14:
 				status = wheels.rotate(-15);
 				break;
-			//Add targetting and shooting
+			case 15:
+				status = Robot.DONE;
+				break;
+			case 16:
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 17:
+				// Start Conveyer and Shooter
+
+				//Targets while shooting to save time
+				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
+
+				if (shooter.shooterReadyAuto() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				}
+				else {
+					// Shooter below required RPM, Turn Conveyers Off
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				}
+
+				// Allow time for the shooter to Shoot
+				currentMs = System.currentTimeMillis();
+				if ((currentMs - startMs) > SHOOT_TIME ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 18:
+				shooter.autoShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
 			default:
 				firstTime = true;
 

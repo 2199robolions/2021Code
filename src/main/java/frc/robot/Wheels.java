@@ -84,7 +84,8 @@ public class Wheels {
 	private PIDController turnController;
 
 	//static final double kToleranceDegrees = 1.0f;
-	static final double kToleranceDegrees = 2.0f;
+	static final double kToleranceDegrees = 2.0f; 
+	static final double kRotateToleranceDegrees = 4.0f;//4
 	static final double kLimeLightToleranceDegrees = 1.0f;
 
 	//
@@ -95,7 +96,7 @@ public class Wheels {
 	//Limelight Variables
 	private boolean limeLightFirstTime = true;
 	private static final int ON_TARGET_COUNT = 20;
-	private static final int ON_ANGLE_COUNT = 10;
+	private static final int ON_ANGLE_COUNT = 5; //10 --> 5
 
 	//Limelight
 	private             double  m_LimelightCalculatedDistPrev = 0;
@@ -416,13 +417,13 @@ public class Wheels {
 		//System.out.println(pidOutput);
 		drive.arcadeDrive( 0.0, pidOutput * -1, false);
 
-		turnController.setTolerance(kToleranceDegrees);
+		turnController.setTolerance(kRotateToleranceDegrees); 
 		// CHECK: Routine Complete
 		if (turnController.atSetpoint() == true) {
 			count = count + 1;
 			System.out.println("Count: " + count);
 
-			if (count == ON_ANGLE_COUNT) {
+			if (count == ON_ANGLE_COUNT) { //Reducing from 10 to 5
 				System.out.println("DONE");
 				turnController.reset();
 				count = 0;
