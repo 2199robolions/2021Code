@@ -184,7 +184,7 @@ public class Auto {
 				break;
 			case 11:
 				conveyer.autoHorizontalControl();
-				status = wheels.forward(12, 180, 0.9);
+				status = wheels.forward(10.5, 175, -0.9);
 				break;
 			case 12:
 				conveyer.autoHorizontalControl();
@@ -194,23 +194,31 @@ public class Auto {
 				break;
 			case 13:
 				conveyer.autoHorizontalControl();
-				status = wheels.forwardFullSpeed(-3.5, 180, 1);
+				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
+				status = wheels.forwardFullSpeed(-5, 180, 1);
 				break;
 			case 14:
+				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
 				status = wheels.rotate(-15);
 				break;
 			case 15:
-				status = Robot.DONE;
-				break;
-			case 16:
 				startMs = System.currentTimeMillis();
 				status = Robot.DONE;
+			case 16:
+				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
+				currentMs = System.currentTimeMillis();
+				if (currentMs - startMs < 1000) {
+					status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				} else {
+					status = Robot.DONE;
+				}
 				break;
 			case 17:
 				// Start Conveyer and Shooter
 
 				//Targets while shooting to save time
-				status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				System.out.println("Step 17 ");
+				wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
 				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
 
 				if (shooter.shooterReadyAuto() == true) {
@@ -226,7 +234,7 @@ public class Auto {
 
 				// Allow time for the shooter to Shoot
 				currentMs = System.currentTimeMillis();
-				if ((currentMs - startMs) > SHOOT_TIME ) {
+				if ((currentMs - startMs) > 7000 ) {
 					status = Robot.DONE;
 				}
 				break;

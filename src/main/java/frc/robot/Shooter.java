@@ -50,6 +50,9 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 	  23			19.7			.70
 	  24			20.4			.70
 	  25			20.9			.70
+
+	  7/17/2021
+	  squishy balls shoot low, stiff ones shoot high
 	  */
 
 public class Shooter {
@@ -69,15 +72,15 @@ public class Shooter {
 	// CONSTANTS
 	public final double OFF_POWER       = 0.00;
 	public final double TEN_FOOT_POWER  = 0.67; //According to test, should give 4600 rpm by default
-	public final double TRENCH_POWER    = 0.62; //.648 //.645
-	public final double HAIL_MARY_POWER = 1.00;
+	public final double TRENCH_POWER    = 0.69; //.648 //.645
+	public final double HAIL_MARY_POWER = 0.71;
 
 	public final double MAX_TARGET_RPM       = 5300; 
 	public final double OFF_TARGET_RPM       = 0;
 	private final double ERROR_TARGET_RPM    = 150.0;
 	public final double TEN_FOOT_TARGET_RPM  = 3830; //3720
-	public final double TRENCH_TARGET_RPM    = 3560; //3662
-	public final double HAIL_MARY_TARGET_RPM = 4960; //5375
+	public final double TRENCH_TARGET_RPM    = 3970; //3662
+	public final double HAIL_MARY_TARGET_RPM = 4040; //5375
 
 	
 	public double targetVelocity; //was private

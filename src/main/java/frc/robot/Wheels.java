@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import jdk.jfr.Description;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -272,6 +273,9 @@ public class Wheels {
 	}
 
 
+	/*
+	* Needs negative forwardPower
+	*/
 	public int forward(double feet, double heading, double forwardPower) {
 		double encoderCurrent;
 		//double forwardPower = -.6;          // Negative Push Robot Forward
