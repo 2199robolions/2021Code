@@ -86,20 +86,17 @@ public class Grabber {
         //Don't allow grabber to turn if it's retracted
         if(grabberState == GrabberState.RETRACT)  {
             grabberMotor.set(0.0);
-            System.out.println("Grabber off");
             return;
         }
         
         // Grabber Intake (Negative Power Brings Ball In)
         if (dir == GrabberDirection.FORWARD) {
             grabberMotor.set(GRABBER_POWER * -1);
-            System.out.println("Grabber on: " + GRABBER_POWER * -1);
             
         }
         // Grabber Reverse
         else if (dir == GrabberDirection.REVERSE) {
             grabberMotor.set(GRABBER_POWER);
-            System.out.println("Grabber on: " + GRABBER_POWER * -1);
 
         }
         else {

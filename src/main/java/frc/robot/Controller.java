@@ -78,7 +78,7 @@ public class Controller {
 
     // X Deploys Color Sensor
     public boolean colorDeployRetract() {
-        return false;
+        return xbox.getXButtonPressed();
     }
 
     // Y Deploys / Retracts Grabber

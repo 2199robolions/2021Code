@@ -44,6 +44,16 @@ public class Auto {
 		step = 1;
 	}
 
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * For the 2021 offseason game
 	 */
@@ -198,6 +208,7 @@ public class Auto {
 				status = wheels.forwardFullSpeed(-5, 180, 1);
 				break;
 			case 14:
+				grabber.grabberDirection(Grabber.GrabberDirection.OFF);
 				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
 				status = wheels.rotate(-15);
 				break;
@@ -207,7 +218,7 @@ public class Auto {
 			case 16:
 				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
 				currentMs = System.currentTimeMillis();
-				if (currentMs - startMs < 1000) {
+				if (currentMs - startMs < 2500) { //2500
 					status = wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
 				} else {
 					status = Robot.DONE;
@@ -218,8 +229,72 @@ public class Auto {
 
 				//Targets while shooting to save time
 				System.out.println("Step 17 ");
-				wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
+				//wheels.limelightPIDTargeting(Wheels.TargetPipeline.TEN_FOOT);
 				shooter.autoShooterControl( Shooter.ShootLocation.TRENCH );
+
+				//if (shooter.shooterReadyAuto() == true) {
+					// Shooter at required RPM, Turn Conveyers On
+					conveyer.manualHorizontalControl(Conveyer.ConveyerState.FORWARD);
+					conveyer.manualVerticalControl(  Conveyer.ConveyerState.FORWARD);
+				//}
+				//else {
+					// Shooter below required RPM, Turn Conveyers Off
+					//conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+					//conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				//}
+
+				// Allow time for the shooter to Shoot
+				currentMs = System.currentTimeMillis();
+				if ((currentMs - startMs) > 7000 ) {
+					status = Robot.DONE;
+				}
+				break;
+			case 18:
+				shooter.autoShooterControl( Shooter.ShootLocation.OFF );
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
+				status = Robot.DONE;
+				break;
+			default:
+				firstTime = true;
+
+				grabber. grabberDirection(Grabber.GrabberDirection.OFF);
+				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
+				conveyer.manualVerticalControl(Conveyer.ConveyerState.OFF);
+
+				return Robot.DONE;
+		}
+
+		if ((status == Robot.DONE) || (status == Robot.FAIL)) {
+			step = step + 1;
+		}
+
+		return Robot.CONT;
+	}
+
+	//166" from right wall; 13'10"
+	public int autoLeftFull( int delaySec){
+		long currentMs;
+		long delayMsec = delaySec * 1000;
+
+		int status = Robot.CONT;
+
+		if (firstTime == true) {
+			step = 1;
+			firstTime = false;
+		}
+
+		switch(step) {
+			case 1:
+				status = delay(delayMsec);
+				break;
+			case 2:
+				startMs = System.currentTimeMillis();
+				status = Robot.DONE;
+				break;
+			case 3:
+				// Start Conveyer and Shooter
+				shooter.autoShooterControl( Shooter.ShootLocation.TEN_FOOT );
 
 				if (shooter.shooterReadyAuto() == true) {
 					// Shooter at required RPM, Turn Conveyers On
@@ -234,15 +309,21 @@ public class Auto {
 
 				// Allow time for the shooter to Shoot
 				currentMs = System.currentTimeMillis();
-				if ((currentMs - startMs) > 7000 ) {
+				if ((currentMs - startMs) > 5000 ) {
 					status = Robot.DONE;
 				}
 				break;
-			case 18:
+			case 4:
 				shooter.autoShooterControl( Shooter.ShootLocation.OFF );
 				conveyer.manualHorizontalControl(Conveyer.ConveyerState.OFF);
 				conveyer.manualVerticalControl(  Conveyer.ConveyerState.OFF);
 				status = Robot.DONE;
+				break;
+			case 5:
+				status = wheels.rotate(0);
+				break;
+			case 6:
+				status = wheels.forward(-3, 0);
 				break;
 			default:
 				firstTime = true;
@@ -333,6 +414,16 @@ public class Auto {
 
 		return Robot.CONT;
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 	/** 
@@ -592,6 +683,11 @@ public class Auto {
 
 		return Robot.CONT;
 	}
+
+
+
+
+
 
 	/**
 	 * The auto program that we will be using for the May 20th Demo
@@ -1240,7 +1336,6 @@ public class Auto {
 	}
 
 
-
 	public int autoCircleTest() {
 
 		if (firstTime == true) {
@@ -1343,6 +1438,14 @@ public class Auto {
 
 		return Robot.CONT;
 	}
+
+
+
+
+
+
+
+
 
 
 

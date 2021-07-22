@@ -226,12 +226,14 @@ public class Robot extends TimedRobot {
 				//System.out.println("Running right auto");
 			} else if (m_positionSelected.equals(kCustomAutoCenter) == true){
 				autoStatus = auto.autoCenterFull(delaySeconds);
+			} else if (m_positionSelected.equals(kCustomAutoLeft) == true){
+				autoStatus = auto.autoLeftFull(delaySeconds);
 			}
 			SmartDashboard.putNumber("Time", ((System.nanoTime() - startTime)/1000000000.0) );
 			
 		} else if (autoStatus == Robot.DONE){
 			endTime = System.nanoTime();
-			//System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));	
+			System.out.println("Elapsed Time: " + ((endTime - startTime)/1000000000.0));	
 		}
 	}
 
