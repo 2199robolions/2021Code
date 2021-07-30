@@ -385,7 +385,7 @@ public class Auto {
 
 				// Allow time for the shooter to Shoot
 				currentMs = System.currentTimeMillis();
-				if ((currentMs - startMs) > SHOOT_TIME ) {
+				if ((currentMs - startMs) > 7500 ) {
 					status = Robot.DONE;
 				}
 				break;
