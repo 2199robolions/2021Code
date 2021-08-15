@@ -175,10 +175,10 @@ public class Wheels {
 		sparkRight_2 = new CANSparkMax(sparkRight_2_ID, MotorType.kBrushless);        
 
 		//Encoders
-		encoderLeft_1  = new CANEncoder(sparkLeft_1);
-		encoderLeft_2  = new CANEncoder(sparkLeft_2);
-		encoderRight_1 = new CANEncoder(sparkRight_1);
-		encoderRight_2 = new CANEncoder(sparkRight_2);
+		encoderLeft_1  = sparkLeft_1.getEncoder();
+		encoderLeft_2  = sparkLeft_2.getEncoder();
+		encoderRight_1 = sparkRight_1.getEncoder();
+		encoderRight_2 = sparkRight_2.getEncoder();
 
 		// 2 motors in each supershifter
 		// Do NOT use speedControllerGroup for sparkMax's here
